@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using MojaApp.API.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -8,6 +9,11 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<MyDbContext>(options =>
+{
+    options.UseSqlServer("Server=localhost,1433;Database=Market1;Trusted_Connection=False;User ID=sa;Password=test;MultipleActiveResultSets=true;TrustServerCertificate=True");
+});
 
 var app = builder.Build();
 
@@ -23,8 +29,5 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-
-StudentStorage.Students.Add(new (){ Id = 1, Ime = "A", Prezime="B" });
-StudentStorage.Students.Add(new (){ Id = 2, Ime = "C", Prezime="D" });
 
 app.Run();

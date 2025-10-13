@@ -6,14 +6,14 @@ namespace MojaApp.API.Models
     public class Student
     {
         public int Id { get; set; }
-        public string Ime { get; set; }
-        public string Prezime { get; set; }
-        public string BrojIndeksa { get; set; }
+        public required string Ime { get; set; }
+        public required string Prezime { get; set; }
+        public required string BrojIndeksa { get; set; }
 
-        public int? OpstinaRodjenjaId { get; set; }
+        public required int? OpstinaRodjenjaId { get; set; }
         public Opstina OpstinaRodjenja { get; set; }
-        public DateTime? DatumRodjenja { get; set; }
-        public DateTime CreatedTime { get; set; }
-        public string SlikaStudenta { get; set; }
+        public required DateTime? DatumRodjenja { get; set; }
+        public required DateTime CreatedTime { get; set; }
+        public required string SlikaStudenta { get; set; }
     }
 }

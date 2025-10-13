@@ -8,12 +8,12 @@ namespace MojaApp.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class StudentController : ControllerBase
+    public class StudentController(MyDbContext db) : ControllerBase
     {
         [HttpGet]
         public List<StudentGetAllResponse> GetAll()
         {
-            return StudentStorage.Students.Select(x=> new StudentGetAllResponse
+            return db.Student.Select(x=> new StudentGetAllResponse
                     (
                         x.Id,
                         x.Ime,
@@ -26,7 +26,7 @@ namespace MojaApp.API.Controllers
         [HttpGet("{id}")]
         public StudentGetbyIdResponse GetById(int id)
         {
-            var s = StudentStorage.Students.Where(x=>x.Id == id)
+            var s = db.Student.Where(x=>x.Id == id)
                 .Select(x => new StudentGetbyIdResponse
                     (
                         x.Id,
@@ -47,30 +47,32 @@ namespace MojaApp.API.Controllers
         [HttpPost]
         public int Dodaj([FromBody] StudentDodajRequest request)
         {
-            var maxID = StudentStorage.Students.Max(x => x.Id);
-
             var s = new Student
             {
-                Id = maxID + 1,
                 Ime = request.Ime,
                 Prezime = request.Prezime,
+                BrojIndeksa = "",
                 OpstinaRodjenjaId = request.OpstinaRodjenjaId,
-                DatumRodjenja = request.DatumRodjenja
+                DatumRodjenja = request.DatumRodjenja,
+                CreatedTime = DateTime.UtcNow,
+                SlikaStudenta = "/nesto.jpg"
             };
-            StudentStorage.Students.Add(s);
+            db.Student.Add(s);
+            db.SaveChanges();
             return s.Id;
         }
 
         [HttpDelete]
         public IActionResult Obrisi(int studentId)
         {
-            var s = StudentStorage.Students.FirstOrDefault(x => x.Id == studentId);
+            var s = db.Student.FirstOrDefault(x => x.Id == studentId);
             if (s is null)
             {
                 return BadRequest();
             }
 
-            StudentStorage.Students.Remove(s);
+            db.Student.Remove(s);
+            db.SaveChanges();
             return Ok();
         }
     }
