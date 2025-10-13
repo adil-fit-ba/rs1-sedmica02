@@ -9,6 +9,12 @@ namespace MojaApp.API.Controllers
     [ApiController]
     public class StudentController : ControllerBase
     {
+        [HttpGet]
+        public List<Student> GetAll()
+        {
+            return StudentStorage.Students;
+        }
+
         [HttpGet("{id}")]
         public Student GetById(int id)
         {
@@ -48,10 +54,6 @@ namespace MojaApp.API.Controllers
             return 1;
         }
         
-        [HttpGet]
-        public List<Student> GetAll()
-        {
-            return StudentStorage.Students;
-        }
+ 
     }
 }
