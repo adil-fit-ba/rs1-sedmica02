@@ -19,5 +19,17 @@ namespace MojaApp.API.Controllers
 
             return s;
         }
+
+        [HttpPost]
+        public Student Dodaj(string ime, string prezime)
+        {
+            var s = new Student
+            {
+                Ime = ime,
+                Prezime = prezime
+            };
+            StudentStorage.Students.Add(s);
+            return s;
+        }
     }
 }
