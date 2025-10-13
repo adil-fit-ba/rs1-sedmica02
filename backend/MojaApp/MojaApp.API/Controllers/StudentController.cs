@@ -24,6 +24,7 @@ namespace MojaApp.API.Controllers
         public Student Dodaj(string ime, string prezime)
         {
             var maxID = StudentStorage.Students.Max(x => x.Id);
+
             var s = new Student
             {
                 Id = maxID + 1,
