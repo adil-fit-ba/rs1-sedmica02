@@ -19,5 +19,20 @@ namespace MojaApp.API.Controllers
 
             return s;
         }
+
+        [HttpPost]
+        public Student Dodaj(string ime, string prezime)
+        {
+            var maxID = StudentStorage.Students.Max(x => x.Id);
+
+            var s = new Student
+            {
+                Id = maxID + 1,
+                Ime = ime,
+                Prezime = prezime
+            };
+            StudentStorage.Students.Add(s);
+            return s;
+        }
     }
 }
