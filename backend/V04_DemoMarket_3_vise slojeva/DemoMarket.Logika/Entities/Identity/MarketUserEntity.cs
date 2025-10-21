@@ -1,6 +1,6 @@
 ﻿// MarketUserEntity.cs
 
-namespace DemoMarket.API.Entities.Identity;
+namespace DemoMarket.Logika.Entities.Identity;
 
 public sealed class MarketUserEntity
 {

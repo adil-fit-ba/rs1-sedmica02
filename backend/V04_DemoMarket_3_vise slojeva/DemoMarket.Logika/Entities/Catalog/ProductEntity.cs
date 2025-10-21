@@ -1,4 +1,4 @@
-﻿namespace DemoMarket.API.Entities.Catalog;
+﻿namespace DemoMarket.Logika.Entities.Catalog;
 
 /// <summary>
 /// Represents a product in the system.

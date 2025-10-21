@@ -1,8 +1,8 @@
-﻿using DemoMarket.API.Entities.Catalog;
-using DemoMarket.API.Entities.Identity;
+﻿using DemoMarket.Logika.Entities.Catalog;
+using DemoMarket.Logika.Entities.Identity;
 using Microsoft.EntityFrameworkCore;
 
-namespace DemoMarket.API.Data
+namespace DemoMarket.Logika.Data
 {
     public partial class DatabaseContext : DbContext
     {

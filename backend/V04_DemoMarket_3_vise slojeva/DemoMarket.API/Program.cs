@@ -1,5 +1,4 @@
-
-using DemoMarket.API.Data;
+using DemoMarket.Logika.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoMarket.API
