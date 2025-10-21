@@ -7,7 +7,6 @@ using DemoMarket.API.Controllers.Queries.List;
 using DemoMarket.API.Data;
 using DemoMarket.API.Entities.Catalog;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace DemoMarket.API.Controllers;
@@ -35,7 +34,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
         var category = new ProductCategoryEntity
         {
-            Name = request.Name!.Trim(),
+            Name = normalized,
             IsEnabled = true // default IsEnabled
         };
 
@@ -46,19 +45,19 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
     }
 
     // PUT /productcategories/{id}
-    [HttpPut("{id:int}")]
-    public IActionResult Update(int id, [FromBody] UpdateProductCategoryCommand request)
+    [HttpPut("{id}")]
+    public ActionResult Update(int id, [FromBody] UpdateProductCategoryCommand request)
     {
         var entity = db.ProductCategories
-           .Where(x => x.Id == request.Id)
+           .Where(x => x.Id == id)
            .FirstOrDefault();
 
         if (entity is null)
-            throw new MarketNotFoundException($"Kategorija (ID={request.Id}) nije pronađena.");
+            throw new MarketNotFoundException($"Kategorija (ID={id}) nije pronađena.");
 
         // Check for duplicate name (case-insensitive, except for the same ID)
         var exists = db.ProductCategories
-            .Any(x => x.Id != request.Id && x.Name.ToLower() == request.Name.ToLower());
+            .Any(x => x.Id != id && x.Name.ToLower() == request.Name.ToLower());
 
         if (exists)
         {
@@ -73,7 +72,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
     // DELETE /productcategories/{id}
     [HttpDelete("{id:int}")]
-    public IActionResult Delete(int id)
+    public ActionResult Delete(int id)
     {
         var category = db.ProductCategories
             .FirstOrDefault(x => x.Id == id);
@@ -88,11 +87,11 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
     }
 
     // GET /productcategories/{id}
-    [HttpGet("{id:int}")]
-    public ActionResult<GetProductCategoryByIdQueryDto> GetById([FromQuery] GetProductCategoryByIdQuery request)
+    [HttpGet("{id}")]
+    public ActionResult<GetProductCategoryByIdQueryDto> GetById(int id)
     {
         var category = db.ProductCategories
-            .Where(c => c.Id == request.Id)
+            .Where(c => c.Id == id)
             .Select(x => new GetProductCategoryByIdQueryDto
             {
                 Id = x.Id,
@@ -103,17 +102,17 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
         if (category == null)
         {
-            throw new MarketNotFoundException($"Product category with Id {request.Id} not found.");
+            throw new MarketNotFoundException($"Product category with Id {id} not found.");
         }
 
         return category;
     }
 
     // GET /productcategories?Search=...&Skip=0&Take=20
-    [HttpGet]
+    [HttpGet()]
     public PageResult<ListProductCategoriesQueryDto> List([FromQuery] ListProductCategoriesQuery request)
     {
-        IQueryable<ProductCategoryEntity> q = db.ProductCategories.AsNoTracking();
+        IQueryable<ProductCategoryEntity> q = db.ProductCategories.AsQueryable();
 
         if (!string.IsNullOrWhiteSpace(request.Search))
         {
@@ -136,7 +135,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
     // PUT /productcategories/{id}/disable
     [HttpPut("{id:int}/disable")]
-    public IActionResult Disable(int id)
+    public ActionResult Disable(int id)
     {
         var cat = db.ProductCategories
             .FirstOrDefault(x => x.Id == id);
@@ -168,7 +167,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
     // PUT /productcategories/{id}/enable
     [HttpPut("{id:int}/enable")]
-    public IActionResult Enable(int id)
+    public ActionResult Enable(int id)
     {
         var entity = db.ProductCategories
             .FirstOrDefault(x => x.Id == id);
