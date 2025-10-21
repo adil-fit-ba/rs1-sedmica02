@@ -18,9 +18,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 {
     // POST /productcategories
     [HttpPost]
-    public async Task<ActionResult<int>> CreateProductCategory(
-        [FromBody] CreateProductCategoryCommand request,
-        CancellationToken ct)
+    public async Task<ActionResult<int>> CreateProductCategory([FromBody] CreateProductCategoryCommand request, CancellationToken ct)
     {
         var normalized = request.Name?.Trim();
 
@@ -28,8 +26,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
             throw new ValidationException("Name is required.");
 
         // Check if a category with the same name already exists.
-        bool exists = await db.ProductCategories
-            .AnyAsync(x => x.Name == normalized, ct);
+        bool exists = await db.ProductCategories.AnyAsync(x => x.Name == normalized, ct);
 
         if (exists)
         {
@@ -50,19 +47,17 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
     // PUT /productcategories/{id}
     [HttpPut("{id}")]
-    public async Task<ActionResult> Update(
-        int id,
-        [FromBody] UpdateProductCategoryCommand request,
-        CancellationToken ct)
+    public async Task<ActionResult> Update(int id, [FromBody] UpdateProductCategoryCommand request, CancellationToken ct)
     {
-        var entity = await db.ProductCategories
-            .FirstOrDefaultAsync(x => x.Id == id, ct);
+        var entity = db.ProductCategories
+           .Where(x => x.Id == id)
+           .FirstOrDefault();
 
         if (entity is null)
             throw new MarketNotFoundException($"Kategorija (ID={id}) nije pronađena.");
 
         // Check for duplicate name (case-insensitive, except for the same ID)
-        bool exists = await db.ProductCategories
+        var exists = await db.ProductCategories
             .AnyAsync(x => x.Id != id && x.Name.ToLower() == request.Name.ToLower(), ct);
 
         if (exists)
@@ -94,9 +89,7 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
 
     // GET /productcategories/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<GetProductCategoryByIdQueryDto>> GetById(
-        int id,
-        CancellationToken ct)
+    public async Task<ActionResult<GetProductCategoryByIdQueryDto>> GetById(int id, CancellationToken ct)
     {
         var category = await db.ProductCategories
             .Where(c => c.Id == id)
@@ -117,10 +110,8 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
     }
 
     // GET /productcategories?Search=...&Skip=0&Take=20
-    [HttpGet]
-    public async Task<PageResult<ListProductCategoriesQueryDto>> List(
-        [FromQuery] ListProductCategoriesQuery request,
-        CancellationToken ct)
+    [HttpGet()]
+    public async Task<PageResult<ListProductCategoriesQueryDto>> List([FromQuery] ListProductCategoriesQuery request, CancellationToken ct)
     {
         IQueryable<ProductCategoryEntity> q = db.ProductCategories.AsQueryable();
 
@@ -148,16 +139,18 @@ public sealed class ProductCategoriesController(DatabaseContext db) : Controller
     public async Task<ActionResult> Disable(int id, CancellationToken ct)
     {
         var cat = await db.ProductCategories
-            .FirstOrDefaultAsync(x => x.Id == id, ct);
+            .FirstOrDefaultAsync(x => x.Id == id);
 
         if (cat is null)
+        {
             throw new MarketNotFoundException($"Kategorija (ID={id}) nije pronađena.");
+        }
 
         if (!cat.IsEnabled) return Ok(); // idempotent
 
         // Business rule: cannot disable if there are active products
-        bool hasActiveProducts = await db.Products
-            .AnyAsync(p => p.CategoryId == cat.Id && p.IsEnabled, ct);
+        var hasActiveProducts = db.Products
+            .Any(p => p.CategoryId == cat.Id && p.IsEnabled);
 
         if (hasActiveProducts)
         {
