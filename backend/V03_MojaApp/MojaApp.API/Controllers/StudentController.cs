@@ -11,16 +11,28 @@ namespace MojaApp.API.Controllers
     public class StudentController(MyDbContext db) : ControllerBase
     {
         [HttpGet]
-        public List<StudentGetAllResponse> GetAll()
+        public List<StudentGetAllResponse> GetAll(string? ime, string? opstina)
         {
-            return db.Student.Select(x=> new StudentGetAllResponse
+            var query = db.Student.AsQueryable();
+
+            query = query.OrderBy(x => x.Ime).ThenBy(x => x.Prezime);
+
+            if (ime != null)
+                query = query.Where(x => x.Ime.StartsWith(ime));
+
+            if (opstina != null)
+                query = query.Where(x => x.OpstinaRodjenja.Description.StartsWith(opstina));
+
+            return query
+                .Select(x => new StudentGetAllResponse
                     (
                         x.Id,
                         x.Ime,
                         x.Prezime,
                         x.OpstinaRodjenja == null ? null : new StudentGetAllResponseOpstina(x.OpstinaRodjenja.Description, "123")
                     )
-                ).ToList();
+                )
+                .ToList();
         }
 
         [HttpGet("{id}")]

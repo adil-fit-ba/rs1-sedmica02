@@ -12,7 +12,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddDbContext<MyDbContext>(options =>
 {
-    options.UseSqlServer("Server=localhost,1433;Database=Market1;Trusted_Connection=False;User ID=sa;Password=test;MultipleActiveResultSets=true;TrustServerCertificate=True");
+    options.UseSqlServer("Server=localhost,1433;Database=Marketv04;Trusted_Connection=False;User ID=sa;Password=test;MultipleActiveResultSets=true;TrustServerCertificate=True");
 });
 
 var app = builder.Build();
