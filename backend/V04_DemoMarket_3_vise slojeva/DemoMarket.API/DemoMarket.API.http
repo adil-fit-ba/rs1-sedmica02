@@ -1,0 +1,6 @@
+@DemoMarket.API_HostAddress = http://localhost:5260
+
+GET {{DemoMarket.API_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
