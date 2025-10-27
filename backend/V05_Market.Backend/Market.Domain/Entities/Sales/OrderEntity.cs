@@ -55,4 +55,14 @@ public class OrderEntity : BaseEntity
 
     ///// </summary>
     //public IReadOnlyCollection<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
+
+    /// <summary>
+    /// Single source of truth for technical/business constraints.
+    /// Used in validators and EF configuration.
+    /// </summary>
+    public static class Constraints
+    {
+        public const int ReferenceMaxLength = 10;
+    }
 }
+

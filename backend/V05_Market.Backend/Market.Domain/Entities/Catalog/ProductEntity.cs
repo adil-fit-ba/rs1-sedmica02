@@ -1,4 +1,5 @@
 ﻿using Market.Domain.Common;
+using Market.Domain.Entities.Sales;
 
 namespace Market.Domain.Entities.Catalog;
 
@@ -41,6 +42,15 @@ public class ProductEntity : BaseEntity
     /// IsEnabled
     /// </summary>
     public bool IsEnabled { get; set; }
+
+    ///// <summary>
+    ///// Collection of order items.
+    /////
+    ///// **Napomena za studente:**
+
+    ///// </summary>
+    //public IReadOnlyCollection<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
+
 
     /// <summary>
     /// Single source of truth for technical/business constraints.
