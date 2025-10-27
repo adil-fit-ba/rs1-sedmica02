@@ -44,6 +44,9 @@ public partial class DatabaseContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // učitaj sve konfiguracije iz Infrastructure.Database.Configurations
+        modelBuilder.ApplyConfigurationsFromAssembly(typeof(DatabaseContext).Assembly);
+
         ApplyGlobalFielters(modelBuilder);
 
         StaticDataSeeder.Seed(modelBuilder); // static data

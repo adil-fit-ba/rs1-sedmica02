@@ -7,7 +7,7 @@ public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
     public void Configure(EntityTypeBuilder<OrderEntity> builder)
     {
         builder
-            .ToTable("Products");
+            .ToTable("Oders");
 
         builder
             .Property(x => x.ReferenceNumber)
