@@ -1,4 +1,4 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Queries;
+﻿namespace Market.Application.Modules.Catalog.Products.Queries.List;
 
 public sealed class ListProductsQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListProductsQuery, PageResult<ListProductsQueryDto>>
