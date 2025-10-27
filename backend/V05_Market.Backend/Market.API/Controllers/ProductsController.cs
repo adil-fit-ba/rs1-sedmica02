@@ -4,7 +4,7 @@ using Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Enabl
 using Market.Application.Modules.Catalog.ProductCategories.Commands.Create;
 using Market.Application.Modules.Catalog.ProductCategories.Commands.Update;
 using Market.Application.Modules.Catalog.ProductCategories.Queries.GetById;
-using Market.Application.Modules.Catalog.ProductCategories.Queries.List;
+using Market.Application.Modules.Catalog.Products.Queries;
 
 namespace Market.API.Controllers;
 
