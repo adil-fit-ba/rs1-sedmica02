@@ -49,6 +49,11 @@ public class OrderItemEntity : BaseEntity
     public decimal? DiscountAmount { get; set; }
 
     /// <summary>
+    /// Discount percent to this item (optional).
+    /// </summary>
+    public decimal? DiscountPercent { get; set; }
+
+    /// <summary>
     /// Final total for this item (Subtotal - Discount).
     /// </summary>
     public required decimal Total { get; set; }

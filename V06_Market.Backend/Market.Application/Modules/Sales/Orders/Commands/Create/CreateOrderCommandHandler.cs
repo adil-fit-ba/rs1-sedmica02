@@ -26,15 +26,32 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == item.ProductId, ct);
 
+            if (product is null)
+            {
+                throw new ValidationException($"Invalid productId {item.ProductId}.");
+            }
+
+            if (product.IsEnabled == false)
+            {
+                throw new ValidationException($"Product {product.Name} is disabled.");
+            }
+
+            decimal subtotal = product!.Price * item.Quantity;
+
+            decimal discountPercent = 0.05m;
+            decimal discountAmount = subtotal * discountPercent;
+            decimal total = subtotal - discountAmount;
+
             var orderItem = new OrderItemEntity
             {
                 OrderId = order.Id,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
                 UnitPrice = product!.Price,
-                Subtotal = product!.Price * item.Quantity,
-                DiscountAmount = 0.05m,
-                Total = (1 - 0.05m) * (product!.Price * item.Quantity)
+                Subtotal = subtotal,
+                DiscountPercent = discountPercent,
+                DiscountAmount = discountAmount,
+                Total = total
             };
 
             ctx.OrderItems.Add(orderItem);
