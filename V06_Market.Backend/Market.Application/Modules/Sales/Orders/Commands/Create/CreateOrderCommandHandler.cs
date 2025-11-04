@@ -20,15 +20,16 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
         ctx.Orders.Add(order);
         await ctx.SaveChangesAsync(ct);
 
-       foreach (var item in request.Items)
+        foreach (var item in request.Items)
         {
             var product = await ctx.Products
                 .AsNoTracking()
                 .FirstOrDefaultAsync(p => p.Id == item.ProductId, ct);
 
+            //TODO: koristiti rollback transaction ako bilo koji item nije validan
             if (product is null)
             {
-                throw new ValidationException($"Invalid productId {item.ProductId}.");
+                throw new ValidationException(message: $"Invalid productId {item.ProductId}.");
             }
 
             if (product.IsEnabled == false)
@@ -44,7 +45,7 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
 
             var orderItem = new OrderItemEntity
             {
-                OrderId = order.Id,
+                OrderId = order.Id,//ako koristimo id onda mora SaveChanges prije od Order biti prije toga
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
                 UnitPrice = product.Price,

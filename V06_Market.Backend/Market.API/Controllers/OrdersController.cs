@@ -1,6 +1,7 @@
 using Market.Application.Modules.Catalog.Products.Queries.GetById;
 using Market.Application.Modules.Catalog.Products.Commands.Create;
 using Market.Application.Modules.Catalog.Products.Queries.List;
+using Market.Application.Modules.Sales.Orders.Commands.Update;
 
 namespace Market.API.Controllers;
 
@@ -16,14 +17,14 @@ public class OrdersController(ISender sender) : ControllerBase
         return CreatedAtAction(nameof(GetById), new { id }, new { id });
     }
 
-    //[HttpPut("{id:int}")]
-    //public async Task Update(int id, UpdateProductCommand command, CancellationToken ct)
-    //{
-    //    // ID from the route takes precedence
-    //    command.Id = id;
-    //    await sender.Send(command, ct);
-    //    // no return -> 204 No Content
-    //}
+    [HttpPut("{id:int}")]
+    public async Task Update(int id, UpdateOrderCommand command, CancellationToken ct)
+    {
+        // ID from the route takes precedence
+        command.Id = id;
+        await sender.Send(command, ct);
+        // no return -> 204 No Content
+    }
 
     //[HttpDelete("{id:int}")]
     //public async Task Delete(int id, CancellationToken ct)
