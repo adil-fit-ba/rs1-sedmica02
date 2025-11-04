@@ -36,7 +36,7 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
                 throw new ValidationException($"Product {product.Name} is disabled.");
             }
 
-            decimal subtotal = product!.Price * item.Quantity;
+            decimal subtotal = product.Price * item.Quantity;
 
             decimal discountPercent = 0.05m;
             decimal discountAmount = subtotal * discountPercent;
@@ -47,7 +47,7 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
                 OrderId = order.Id,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
-                UnitPrice = product!.Price,
+                UnitPrice = product.Price,
                 Subtotal = subtotal,
                 DiscountPercent = discountPercent,
                 DiscountAmount = discountAmount,

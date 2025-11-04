@@ -54,7 +54,7 @@ public class OrderEntity : BaseEntity
     ///// **Napomena za studente:**
 
     ///// </summary>
-    //public IReadOnlyCollection<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
+    public IReadOnlyCollection<OrderItemEntity> Items { get; set; } = new List<OrderItemEntity>();
 
     /// <summary>
     /// Single source of truth for technical/business constraints.

@@ -18,7 +18,7 @@ public class OrderItemConfiguration : IEntityTypeConfiguration<OrderItemEntity>
 
         builder
             .HasOne(x => x.Order)
-            .WithMany() // ako nemamo navigaciju, onda stavimo samo WithMany()
+            .WithMany(x=>x.Items) // ako nemamo navigaciju, onda stavimo samo WithMany()
             .HasForeignKey(x => x.OrderId)
             .OnDelete(DeleteBehavior.Cascade);// Cascade — deleting a Order will delete OrderItems
     }

@@ -1,5 +1,6 @@
 using Market.Application.Modules.Catalog.Products.Queries.GetById;
 using Market.Application.Modules.Catalog.Products.Commands.Create;
+using Market.Application.Modules.Catalog.Products.Queries.List;
 
 namespace Market.API.Controllers;
 
@@ -38,12 +39,12 @@ public class OrdersController(ISender sender) : ControllerBase
         return category; // if NotFoundException -> 404 via middleware
     }
 
-    //[HttpGet]
-    //public async Task<PageResult<ListProductsQueryDto>> List([FromQuery] ListProductsQuery query, CancellationToken ct)
-    //{
-    //    var result = await sender.Send(query, ct);
-    //    return result;
-    //}
+    [HttpGet]
+    public async Task<PageResult<ListOrdersQueryDto>> List([FromQuery] ListOrdersQuery query, CancellationToken ct)
+    {
+        var result = await sender.Send(query, ct);
+        return result;
+    }
 
     //[HttpPut("{id:int}/disable")]
     //public async Task Disable(int id, CancellationToken ct)
