@@ -1,4 +1,4 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Commands.Create;
+﻿namespace Market.Application.Modules.Sales.Orders.Commands.Create;
 
 public class CreateOrderCommand : IRequest<int>
 {

@@ -11,12 +11,12 @@ public class OrderItemEntity : BaseEntity
     /// <summary>
     /// ID of the parent order.
     /// </summary>
-    public required int OrderId { get; set; }
+    public int OrderId { get; set; }
 
     /// <summary>
     /// Associated order. (optional)
     /// </summary>
-    public OrderEntity? Order { get; set; }
+    public required OrderEntity? Order { get; set; }
 
     /// <summary>
     /// ID of the product being ordered.

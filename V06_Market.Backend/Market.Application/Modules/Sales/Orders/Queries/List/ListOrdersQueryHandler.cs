@@ -1,9 +1,8 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Queries.List;
+﻿namespace Market.Application.Modules.Sales.Orders.Queries.List;
 
 public sealed class ListOrdersQueryHandler(IAppDbContext ctx)
         : IRequestHandler<ListOrdersQuery, PageResult<ListOrdersQueryDto>>
 {
-
     public async Task<PageResult<ListOrdersQueryDto>> Handle(ListOrdersQuery request, CancellationToken ct)
     {
         var q = ctx.Orders.AsNoTracking();
@@ -32,22 +31,6 @@ public sealed class ListOrdersQueryHandler(IAppDbContext ctx)
                 Status = x.Status,
                 TotalAmount = x.TotalAmount,
                 Note = x.Note,
-                //"x.Items" ili "ctx.OrderItems.Where(x => x.OrderId == x.Id)"
-                Items = x.Items.Select(i => new ListOrdersQueryDtoItem
-                {
-                    Product = new ListOrdersQueryDtoItemProduct
-                    {
-                        ProductId = i.ProductId,
-                        ProductName = i.Product!.Name,
-                        ProductCategoryName = i.Product!.Category!.Name
-                    },
-                    Quantity = i.Quantity,
-                    UnitPrice = i.UnitPrice,
-                    Subtotal = i.Subtotal,
-                    DiscountAmount = i.DiscountAmount,
-                    DiscountPercent = i.DiscountPercent,
-                    Total = i.Total
-                }).ToList()
             });
 
         return await PageResult<ListOrdersQueryDto>.FromQueryableAsync(projectedQuery, request.Paging, ct);
