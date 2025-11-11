@@ -2,7 +2,7 @@
 
 namespace Market.Application.Modules.Sales.Orders.Queries.GetById;
 
-public sealed class GetByIdOrderQueryDto
+public sealed class GetOrderByIdQueryDto
 {
     public required int Id { get; init; }
     public required string ReferenceNumber { get; init; }

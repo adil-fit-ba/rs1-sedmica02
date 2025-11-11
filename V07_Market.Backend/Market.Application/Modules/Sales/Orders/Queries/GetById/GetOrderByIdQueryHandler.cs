@@ -1,10 +1,10 @@
 ﻿namespace Market.Application.Modules.Sales.Orders.Queries.GetById;
 
-public sealed class GetByIdOrderQueryHandler(IAppDbContext ctx, IAppCurrentUser currentUser)
-        : IRequestHandler<GetByIdOrderQuery, GetByIdOrderQueryDto>
+public sealed class GetOrderByIdQueryHandler(IAppDbContext ctx, IAppCurrentUser currentUser)
+        : IRequestHandler<GetOrderByIdQuery, GetOrderByIdQueryDto>
 {
 
-    public async Task<GetByIdOrderQueryDto> Handle(GetByIdOrderQuery request, CancellationToken ct)
+    public async Task<GetOrderByIdQueryDto> Handle(GetOrderByIdQuery request, CancellationToken ct)
     {
         var q = ctx.Orders
             .Where(c => c.Id == request.Id);
@@ -15,7 +15,7 @@ public sealed class GetByIdOrderQueryHandler(IAppDbContext ctx, IAppCurrentUser 
         }
 
         var dto = await q.OrderBy(x => x.OrderedAtUtc)
-            .Select(x => new GetByIdOrderQueryDto
+            .Select(x => new GetOrderByIdQueryDto
             {
                 Id = x.Id,
                 ReferenceNumber = x.ReferenceNumber,

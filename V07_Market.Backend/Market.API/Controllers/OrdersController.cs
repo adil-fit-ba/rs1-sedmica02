@@ -28,9 +28,9 @@ public class OrdersController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:int}")]
-    public async Task<GetByIdOrderQueryDto> GetById(int id, CancellationToken ct)
+    public async Task<GetOrderByIdQueryDto> GetById(int id, CancellationToken ct)
     {
-        var dto = await sender.Send(new GetByIdOrderQuery { Id = id }, ct);
+        var dto = await sender.Send(new GetOrderByIdQuery { Id = id }, ct);
         return dto; // if NotFoundException -> 404 via middleware
     }
     [HttpGet]
