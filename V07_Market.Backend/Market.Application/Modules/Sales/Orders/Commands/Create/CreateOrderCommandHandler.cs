@@ -1,6 +1,6 @@
 ﻿using Market.Domain.Entities.Sales;
 
-namespace Market.Application.Modules.Catalog.Products.Commands.Create;
+namespace Market.Application.Modules.Sales.Orders.Commands.Create;
 
 public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser currentUser)
     : IRequestHandler<CreateOrderCommand, int>

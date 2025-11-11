@@ -1,7 +1,8 @@
 using Market.Application.Modules.Catalog.Products.Queries.GetById;
-using Market.Application.Modules.Catalog.Products.Commands.Create;
-using Market.Application.Modules.Catalog.Products.Queries.List;
 using Market.Application.Modules.Sales.Orders.Commands.Update;
+using Market.Application.Modules.Sales.Orders.Commands.Create;
+using Market.Application.Modules.Sales.Orders.Queries.ListWithItems;
+using Market.Application.Modules.Sales.Orders.Queries.List;
 
 namespace Market.API.Controllers;
 

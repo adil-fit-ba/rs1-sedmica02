@@ -1,6 +1,6 @@
 ﻿using Market.Domain.Entities.Sales;
 
-namespace Market.Infrastructure.Database.Configurations.Catelog;
+namespace Market.Infrastructure.Database.Configurations.Sales;
 
 public class OrderConfiguration : IEntityTypeConfiguration<OrderEntity>
 {
