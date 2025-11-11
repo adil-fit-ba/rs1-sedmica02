@@ -23,7 +23,7 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
         #region Load products from database and prepare a map
 
         // pokupiti sve id-ove proizvoda koji se naručuju
-        HashSet<int> productIds = request.Items.Select(ri => ri.ProductId).ToHashSet();
+        List<int> productIds = request.Items.Select(ri => ri.ProductId).ToList(); // ne treba hashset jer filter se radi u bazi
 
         List<ProductEntity> products = await ctx.Products
             .Where(p => productIds.Contains(p.Id)) //<-- dorada nakon nastave za poboljsanje performansi: filtrirati samo proizvode koji su u request.Items
