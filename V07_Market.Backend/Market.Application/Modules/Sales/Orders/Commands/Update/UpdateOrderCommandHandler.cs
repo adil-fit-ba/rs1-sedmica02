@@ -42,6 +42,13 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
 
         #region Delete order items items that are not in the API request
         //todo: brisanje starih itema
+
+        var itemsToDelete = exisingOrderItems
+            .Where(oi => request.Items.All(ri => ri.Id != oi.Id))
+            .ToList();
+
+        ctx.OrderItems.RemoveRange(itemsToDelete);
+
         #endregion
 
         #region Load products from database and prepare a map
