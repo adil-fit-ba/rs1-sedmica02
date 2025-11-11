@@ -20,11 +20,15 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
         ctx.Orders.Add(order);
         await ctx.SaveChangesAsync(ct);
 
+        var products = await ctx.Products
+             .AsNoTracking()
+             .ToListAsync(ct); //<--- moze poboljsati za peformanse: vratiti samo proizvode koji su u request.Items
+
         foreach (var item in request.Items)
         {
-            var product = await ctx.Products
-                .AsNoTracking()
-                .FirstOrDefaultAsync(p => p.Id == item.ProductId, ct);
+            var product = products // O(n^2)
+                .FirstOrDefault(p => p.Id == item.ProductId); //<--- nije kriticno za peformanse: nema sql upita unutar petlje
+
 
             //TODO: koristiti rollback transaction ako bilo koji item nije validan
             if (product is null)

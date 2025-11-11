@@ -36,7 +36,7 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
         {
             var product = await ctx.Products
                .AsNoTracking()
-               .FirstOrDefaultAsync(p => p.Id == item.ProductId, ct);
+               .FirstOrDefaultAsync(p => p.Id == item.ProductId, ct); //<--- kriticno za peformanse: sql upit se izvrsava unutar petlje
 
             if (product is null)
             {
@@ -80,7 +80,7 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
 
                 var orderItem = ctx.OrderItems
                     .Where(oi => oi.Id == item.Id && oi.OrderId == order.Id)
-                    .FirstOrDefault();
+                    .FirstOrDefault(); //<--- kriticno za peformanse: sql upit se izvrsava unutar petlje
 
                 if (orderItem is null)
                 {
