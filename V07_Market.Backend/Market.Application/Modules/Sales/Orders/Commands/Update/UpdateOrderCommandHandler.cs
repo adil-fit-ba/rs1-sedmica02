@@ -52,9 +52,13 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
         #endregion
 
         #region Load products from database and prepare a map
+        // pokupiti sve id-ove proizvoda koji se naručuju
+        HashSet<int> productIds = request.Items.Select(ri => ri.ProductId).ToHashSet();
+
         List<ProductEntity> products = await ctx.Products
-             .AsNoTracking()
-             .ToListAsync(ct); //<--- moze poboljsati za peformanse: vratiti samo proizvode koji su u request.Items
+            .Where(p => productIds.Contains(p.Id)) //<-- dorada nakon nastave za poboljsanje performansi: filtrirati samo proizvode koji su u request.Items
+            .AsNoTracking()
+            .ToListAsync(ct);
 
         Dictionary<int, ProductEntity> productsMap = products.ToDictionary(x => x.Id);
         #endregion
