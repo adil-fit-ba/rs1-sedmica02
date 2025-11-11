@@ -25,6 +25,7 @@ public sealed class GetByIdOrderQueryDtoUser
 
 public class GetByIdOrderQueryDtoItem
 {
+    public required int Id { get; set; }
     public required GetByIdOrderQueryDtoItemProduct Product { get; set; }
     public required decimal Quantity { get; set; }
     public required decimal UnitPrice { get; set; }

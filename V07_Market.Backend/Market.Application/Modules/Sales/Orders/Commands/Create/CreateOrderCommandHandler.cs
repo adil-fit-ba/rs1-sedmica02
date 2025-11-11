@@ -7,7 +7,7 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
 {
     public async Task<int> Handle(CreateOrderCommand request, CancellationToken ct)
     {
-
+        #region Create order and set basic properties
         var order = new OrderEntity
         {
             ReferenceNumber = Guid.NewGuid().ToString().Substring(0, 5).ToUpper(),
@@ -18,19 +18,25 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
             Note = request.Note
         };
         ctx.Orders.Add(order);
-        await ctx.SaveChangesAsync(ct);
+        #endregion
 
-        var products = await ctx.Products
+        #region Load products from database and prepare a map
+        List<ProductEntity> products = await ctx.Products
              .AsNoTracking()
              .ToListAsync(ct); //<--- moze poboljsati za peformanse: vratiti samo proizvode koji su u request.Items
 
+        Dictionary<int, ProductEntity> productsMap = products.ToDictionary(x => x.Id);
+        #endregion
+
+        #region Create order items and calculate totals
+
+        // za demo svrhe, svi proizvodi imaju 5% popusta
+        decimal discountPercent = 0.05m;
+
         foreach (var item in request.Items)
         {
-            var product = products // O(n^2)
-                .FirstOrDefault(p => p.Id == item.ProductId); //<--- nije kriticno za peformanse: nema sql upita unutar petlje
+            ProductEntity? product = productsMap.GetValueOrDefault(item.ProductId); //<--- bolja performansa O(n) jer koristi dictionary
 
-
-            //TODO: koristiti rollback transaction ako bilo koji item nije validan
             if (product is null)
             {
                 throw new ValidationException(message: $"Invalid productId {item.ProductId}.");
@@ -41,15 +47,13 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
                 throw new ValidationException($"Product {product.Name} is disabled.");
             }
 
-            decimal subtotal = product.Price * item.Quantity;
-
-            decimal discountPercent = 0.05m;
-            decimal discountAmount = subtotal * discountPercent;
-            decimal total = subtotal - discountAmount;
+            decimal subtotal = RoundMoney(product.Price * item.Quantity);
+            decimal discountAmount = RoundMoney(subtotal * discountPercent);
+            decimal total = RoundMoney(subtotal - discountAmount);
 
             var orderItem = new OrderItemEntity
             {
-                OrderId = order.Id,//ako koristimo id onda mora SaveChanges prije od Order biti prije toga
+                Order = order,
                 ProductId = item.ProductId,
                 Quantity = item.Quantity,
                 UnitPrice = product.Price,
@@ -60,11 +64,17 @@ public class CreateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
             };
 
             ctx.OrderItems.Add(orderItem);
-            order.TotalAmount += orderItem.Total;
+            order.TotalAmount += RoundMoney(orderItem.Total);
         }
+        #endregion
 
         await ctx.SaveChangesAsync(ct);
 
         return order.Id;
+    }
+
+    private static decimal RoundMoney(decimal value)
+    {
+        return Math.Round(value, 2, MidpointRounding.AwayFromZero);
     }
 }

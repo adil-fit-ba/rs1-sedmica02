@@ -39,6 +39,7 @@ public sealed class ListOrdersWithItemsQueryHandler(IAppDbContext ctx, IAppCurre
                 //"x.Items" ili "ctx.OrderItems.Where(x => x.OrderId == x.Id)"
                 Items = x.Items.Select(i => new ListOrdersWithItemsQueryDtoItem
                 {
+                    Id = i.Id,
                     Product = new ListOrdersWithItemsQueryDtoItemProduct
                     {
                         ProductId = i.ProductId,
