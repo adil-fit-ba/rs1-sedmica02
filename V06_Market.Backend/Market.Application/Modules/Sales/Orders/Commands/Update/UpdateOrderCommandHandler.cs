@@ -8,9 +8,16 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
     public async Task<int> Handle(UpdateOrderCommand request, CancellationToken ct)
     {
         #region Fetch Order, set properties and order items
-        OrderEntity? order = await ctx.Orders
-            .Where(x => x.Id == request.Id)
-            .FirstOrDefaultAsync(ct);
+
+        var q =  ctx.Orders
+            .Where(x => x.Id == request.Id);
+
+        if (!currentUser.IsAdmin)
+        {
+            q = q.Where(o => o.MarketUserId == currentUser.UserId);
+        }
+
+        OrderEntity? order = await q.FirstOrDefaultAsync(ct);
 
         if (order is null)
             throw new MarketNotFoundException($"Orders (ID={request.Id}) nije pronađen.");

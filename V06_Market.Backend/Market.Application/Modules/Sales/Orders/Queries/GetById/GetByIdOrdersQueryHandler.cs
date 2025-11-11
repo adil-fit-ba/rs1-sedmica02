@@ -1,12 +1,20 @@
 ﻿namespace Market.Application.Modules.Sales.Orders.Queries.GetById;
 
-public sealed class GetByIdOrdersQueryHandler(IAppDbContext context)
+public sealed class GetByIdOrdersQueryHandler(IAppDbContext context, IAppCurrentUser currentUser)
         : IRequestHandler<GetByIdOrdersQuery, GetByIdOrdersQueryDto>
 {
     public async Task<GetByIdOrdersQueryDto> Handle(GetByIdOrdersQuery request, CancellationToken ct)
     {
-        var order = await context.Orders
+        var q =  context.Orders
             .Where(c => c.Id == request.Id)
+            .AsNoTracking();
+
+        if (!currentUser.IsAdmin)
+        {
+            q = q.Where(o => o.MarketUserId == currentUser.UserId);
+        }
+
+        var order = await q
             .Select(x => new GetByIdOrdersQueryDto
             {
                 Id = x.Id,

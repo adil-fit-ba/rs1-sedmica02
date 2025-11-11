@@ -1,11 +1,16 @@
 ﻿namespace Market.Application.Modules.Sales.Orders.Queries.ListWithItems;
 
-public sealed class ListOrdersWithItemsQueryHandler(IAppDbContext ctx)
+public sealed class ListOrdersWithItemsQueryHandler(IAppDbContext ctx, IAppCurrentUser currentUser)
         : IRequestHandler<ListOrdersWithItemsQuery, PageResult<ListOrdersWithItemsQueryDto>>
 {
     public async Task<PageResult<ListOrdersWithItemsQueryDto>> Handle(ListOrdersWithItemsQuery request, CancellationToken ct)
     {
         var q = ctx.Orders.AsNoTracking();
+
+        if (!currentUser.IsAdmin)
+        {
+            q = q.Where(o => o.MarketUserId == currentUser.UserId);
+        }
 
         var searchTerm = request.Search?.Trim().ToLower() ?? string.Empty;
 
