@@ -4,8 +4,10 @@ public class GetProductByIdQueryHandler(IAppDbContext context) : IRequestHandler
 {
     public async Task<GetProductByIdQueryDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
-        var category = await context.Products
-            .Where(c => c.Id == request.Id)
+        var q = context.Products
+            .Where(c => c.Id == request.Id);
+
+        var dto = await q
             .Select(x => new GetProductByIdQueryDto
             {
                 Id = x.Id,
@@ -18,11 +20,11 @@ public class GetProductByIdQueryHandler(IAppDbContext context) : IRequestHandler
             })
             .FirstOrDefaultAsync(cancellationToken);
 
-        if (category == null)
+        if (dto == null)
         {
             throw new MarketNotFoundException($"Product with Id {request.Id} not found.");
         }
 
-        return category;
+        return dto;
     }
 }

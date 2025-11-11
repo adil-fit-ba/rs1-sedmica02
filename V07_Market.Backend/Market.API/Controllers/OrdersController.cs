@@ -1,8 +1,8 @@
-using Market.Application.Modules.Catalog.Products.Queries.GetById;
-using Market.Application.Modules.Sales.Orders.Commands.Update;
 using Market.Application.Modules.Sales.Orders.Commands.Create;
-using Market.Application.Modules.Sales.Orders.Queries.ListWithItems;
+using Market.Application.Modules.Sales.Orders.Commands.Update;
+using Market.Application.Modules.Sales.Orders.Queries.GetById;
 using Market.Application.Modules.Sales.Orders.Queries.List;
+using Market.Application.Modules.Sales.Orders.Queries.ListWithItems;
 
 namespace Market.API.Controllers;
 
@@ -27,18 +27,11 @@ public class OrdersController(ISender sender) : ControllerBase
         // no return -> 204 No Content
     }
 
-    //[HttpDelete("{id:int}")]
-    //public async Task Delete(int id, CancellationToken ct)
-    //{
-    //    await sender.Send(new DeleteProductCommand { Id = id }, ct);
-    //    // no return -> 204 No Content
-    //}
-
     [HttpGet("{id:int}")]
-    public async Task<GetProductByIdQueryDto> GetById(int id, CancellationToken ct)
+    public async Task<GetByIdOrderQueryDto> GetById(int id, CancellationToken ct)
     {
-        var category = await sender.Send(new GetProductByIdQuery { Id = id }, ct);
-        return category; // if NotFoundException -> 404 via middleware
+        var dto = await sender.Send(new GetByIdOrderQuery { Id = id }, ct);
+        return dto; // if NotFoundException -> 404 via middleware
     }
     [HttpGet]
     public async Task<PageResult<ListOrdersQueryDto>> List([FromQuery] ListOrdersQuery query, CancellationToken ct)
