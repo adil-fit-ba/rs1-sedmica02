@@ -1,6 +1,6 @@
 ﻿using Market.Domain.Entities.Sales;
 
-namespace Market.Application.Modules.Catalog.Products.Queries.List;
+namespace Market.Application.Modules.Sales.Orders.Queries.List;
 
 public sealed class ListOrdersQueryDto
 {
@@ -12,7 +12,6 @@ public sealed class ListOrdersQueryDto
     public required OrderStatusType Status { get; set; }
     public required decimal TotalAmount { get; set; }
     public required string? Note { get; set; }
-    public required List<ListOrdersQueryDtoItem> Items { get; set; }
 
 }
 public sealed class ListOrdersQueryDtoUser
@@ -21,24 +20,4 @@ public sealed class ListOrdersQueryDtoUser
     public required string UserLastname { get; set; }
     public required string UserAddress { get; set; }//todo
     public required string UserCity { get; set; }//todo
-}
-
-public class ListOrdersQueryDtoItem
-{
-    public required ListOrdersQueryDtoItemProduct Product { get; set; }
-    public required decimal Quantity { get; set; }
-    public required decimal UnitPrice { get; set; }
-    public required decimal Subtotal { get; set; }
-    public required decimal? DiscountAmount { get; set; }
-    public required decimal? DiscountPercent { get; set; }
-    public required decimal Total { get; set; }
-
-}
-
-public class ListOrdersQueryDtoItemProduct
-{
-    public required int ProductId { get; set; }
-    public required string ProductName { get; set; }
-    public required string ProductCategoryName { get; set; }
-
 }
