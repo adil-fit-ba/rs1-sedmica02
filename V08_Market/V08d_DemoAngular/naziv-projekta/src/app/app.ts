@@ -8,4 +8,7 @@ import { Component, signal } from '@angular/core';
 })
 export class App {
   protected readonly title = signal('naziv-projekta');
+
+  selectedComponent = 0;
+
 }
