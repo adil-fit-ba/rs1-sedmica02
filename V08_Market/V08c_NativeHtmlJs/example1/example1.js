@@ -31,7 +31,7 @@ function tick() {
     // svaki put nanovo uzima interval iz slidera
     const interval = parseInt(slider.value, 10);
     console.log(`Novi setTimeout za interval = ${interval}.`)
-    setTimeout(tick, interval);
+    setTimeout(()=>tick(), interval); //<--- dorađeno nakon nastave - da bude u skladu sa example1.component
 }
 
 function startTimer() {

@@ -43,7 +43,7 @@ export class Example1Component implements OnInit {
     // svaki put nanovo uzima interval iz slidera
     const interval = parseInt(this.slider.value, 10);
     console.log(`Novi setTimeout za interval = ${interval}.`)
-    setTimeout(this.tick, interval);
+    setTimeout(()=>this.tick(), interval); //<--- ispravka nakon nastave | this unutar narednog timeout pozva se odnosi na java script globalni "window" objekat a ne na angular componentu
   }
 
   startTimer() {
