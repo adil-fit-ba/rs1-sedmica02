@@ -1,0 +1,21 @@
+<h2>Example 3 – Angular friendly</h2>
+
+<label>Interval (ms): </label>
+<input
+  type="range"
+  min="100"
+  max="2000"
+  step="100"
+  [(ngModel)]="interval"
+/>
+<span>{{ interval }}</span> ms
+
+<br /><br />
+
+<label>Counter: </label>
+<input type="text" [value]="counter" readonly />
+
+<br /><br />
+
+<button (click)="startTimer()">Start</button>
+<button (click)="stopTimer()">Stop</button>

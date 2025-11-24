@@ -1,0 +1,29 @@
+<app-header-menu></app-header-menu>
+
+
+@if (selectedComponent == 0) {
+  <label>selectedComponent je 0</label>
+}
+
+@if (selectedComponent == 1)
+{
+  <div style="border:1px solid red">
+    <app-example1></app-example1>
+  </div>
+}
+
+@if (selectedComponent == 2)
+{
+  <div style="border:1px solid blue">
+    <app-example2></app-example2>
+  </div>
+}
+
+@if (selectedComponent == 3)
+{
+  <div style="border:1px solid purple">
+    <app-example3></app-example3>
+  </div>
+}
+
+<router-outlet/>

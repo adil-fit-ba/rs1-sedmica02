@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Timer</title>
+</head>
+<body>
+    <h2>Timer With Live Interval (Slider)</h2>
+
+    <!-- Slider: interval u ms -->
+    <label>Interval (ms): </label>
+    <input type="range" id="speedSlider" min="100" max="2000" value="1000" step="100">
+    <span id="sliderValue">1000</span> ms
+
+    <br><br>
+
+    <!-- Prikaz brojača -->
+    <label>Counter: </label>
+    <input type="text" id="counterDisplay" value="0" readonly>
+
+    <br><br>
+
+    <!-- Dugmad -->
+    <button onclick="startTimer()">Start</button>
+    <button onclick="stopTimer()">Stop</button>
+
+    <script src="example1.js"></script>
+</body>
+</html>
