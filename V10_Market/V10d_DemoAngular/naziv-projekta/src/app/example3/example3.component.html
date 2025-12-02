@@ -1,1 +1,31 @@
-<h1>example3 works!</h1>
+<h1>Add Product (plain JS)</h1>
+
+<input [(ngModel)]="productCommand.name">
+
+<div>
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" [(ngModel)]="productCommand.name" required />
+  </div>
+
+  <div>
+    <label for="description">Description:</label>
+    <input id="description" [(ngModel)]="productCommand.description" type="text" />
+  </div>
+
+  <div>
+    <label for="price">Price:</label>
+    <input id="price" type="number" [(ngModel)]="productCommand.price"  step="0.01" required />
+  </div>
+
+  <div>
+    <label for="category">Category:</label>
+    <select id="category" [(ngModel)]="productCommand.categoryId"  required>
+      <option value="">-- choose category --</option>
+    </select>
+  </div>
+
+  <button (click)="submitProduct($event)">Save</button>
+</div>
+
+<pre style="border:1px solid red">{{responseInfo}}</pre>
