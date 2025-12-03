@@ -1,13 +1,12 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {interval} from 'rxjs';
 
 @Component({
-  selector: 'app-example2',
+  selector: 'app-example2-manualchangedetection',
   standalone: false,
-  templateUrl: './example2.component.html',
-  styleUrl: './example2.component.scss',
+  templateUrl: './example2-manualchangedetection.component.html',
+  styleUrl: './example2-manualchangedetection.component.scss',
 })
-export class Example2Component implements OnInit {
+export class Example2ManualChangeDetectionComponent implements OnInit {
 
   constructor(private cd: ChangeDetectorRef) {
   }
