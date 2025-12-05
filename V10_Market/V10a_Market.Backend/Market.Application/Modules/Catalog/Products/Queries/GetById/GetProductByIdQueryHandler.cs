@@ -16,7 +16,8 @@ public class GetProductByIdQueryHandler(IAppDbContext context) : IRequestHandler
                 Description = x.Description,
                 Price = x.Price,
                 StockQuantity = x.StockQuantity,
-                CategoryName = x.Category!.Name
+                CategoryName = x.Category!.Name,
+                CategoryId = x.CategoryId
             })
             .FirstOrDefaultAsync(cancellationToken);
 

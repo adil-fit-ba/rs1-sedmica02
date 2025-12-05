@@ -8,5 +8,6 @@ public class GetProductByIdQueryDto
     public required decimal Price { get; set; }
     public required int StockQuantity { get; set; }
     public required string CategoryName { get; set; } //<-- treba poboljsati
+    public required int CategoryId { get; set; } //<-- treba poboljsati
     public required bool IsEnabled { get; init; }
 }
