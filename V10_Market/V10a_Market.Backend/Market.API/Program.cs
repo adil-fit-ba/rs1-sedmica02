@@ -56,14 +56,12 @@ public partial class Program
                     policy =>
                     {
                         policy
-                            .WithOrigins("http://localhost:5500", "http://localhost:4200")
+                            .WithOrigins("http://localhost:4200") // kao string array može i više URL-ova
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
                     });
             });
-
-
 
             var app = builder.Build();
 
@@ -81,10 +79,8 @@ public partial class Program
             app.UseMiddleware<RequestResponseLoggingMiddleware>();
 
             app.UseHttpsRedirection();
-
-            // UseCors obavezno prije UseAuthorization i UseAuthentification
+            // UseCors ide prije UseAuthorization i UseAuthentification
             app.UseCors("AllowAngularDev");
-
 
             app.UseAuthentication();
             app.UseAuthorization();

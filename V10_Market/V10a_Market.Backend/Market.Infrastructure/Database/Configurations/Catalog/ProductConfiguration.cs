@@ -9,6 +9,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>
 
         builder
             .Property(x => x.Name)
+            .IsRequired()
             .HasMaxLength(ProductEntity.Constraints.NameMaxLength);
 
         builder
@@ -20,7 +21,8 @@ public class ProductConfiguration : IEntityTypeConfiguration<ProductEntity>
             .HasPrecision(18, 2);
 
         builder
-            .Property(x => x.StockQuantity);
+            .Property(x => x.StockQuantity)
+            .IsRequired();
 
         builder
             .HasOne(x => x.Category)
