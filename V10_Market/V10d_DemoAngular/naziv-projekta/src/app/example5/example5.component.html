@@ -1,0 +1,50 @@
+<!-- U HTML-u, zamijeni sve productForm.get() sa getControl() -->
+<form [formGroup]="productForm" (ngSubmit)="submitProduct()">
+  <div>
+    <label for="name">Name:</label>
+    <input id="name" type="text" formControlName="name" />
+    <div *ngIf="getControl('name')?.touched && getControl('name')?.invalid">
+      <small *ngIf="getControl('name')?.hasError('required')">
+        Name is required.
+      </small>
+      <small *ngIf="getControl('name')?.hasError('maxlength')">
+        Name is too long.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <label for="description">Description:</label>
+    <textarea id="description" formControlName="description"></textarea>
+  </div>
+
+  <div>
+    <label for="price">Price:</label>
+    <input id="price" type="number" formControlName="price" />
+    <div *ngIf="getControl('price')?.touched && getControl('price')?.invalid">
+      <small *ngIf="getControl('price')?.hasError('required')">
+        Price is required.
+      </small>
+      <small *ngIf="getControl('price')?.hasError('min')">
+        Price must be greater than 0.
+      </small>
+    </div>
+  </div>
+
+  <div>
+    <label for="categoryId">Category:</label>
+    <select id="categoryId" formControlName="categoryId">
+      <option *ngFor="let c of categoryData" [value]="c.id">
+        {{ c.name }}
+      </option>
+    </select>
+  </div>
+
+  <button type="submit" [disabled]="productForm.invalid">
+    Submit
+  </button>
+</form>
+
+<hr />
+
+<pre>{{ responseInfo }}</pre>

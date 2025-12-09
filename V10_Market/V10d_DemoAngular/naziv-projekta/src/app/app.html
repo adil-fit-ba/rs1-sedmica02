@@ -5,6 +5,8 @@
   <a (click)="selectedComponent = 2">Example2 (manual cd)</a>
   <a (click)="selectedComponent = 3">Example2 (signal)</a>
   <a (click)="selectedComponent = 4">Example3</a>
+  <a (click)="selectedComponent = 5">Example4</a>
+  <a (click)="selectedComponent = 6">Example5</a>
 </div>
 
 
@@ -40,7 +42,18 @@
     <app-example3/>
   </div>
 }
-
+@if(selectedComponent == 5)
+{
+  <div style="border:1px solid purple;">
+    <app-example4/>
+  </div>
+}
+@if(selectedComponent == 6)
+{
+  <div style="border:1px solid purple;">
+    <app-example5/>
+  </div>
+}
 @if(selectedComponent == -1)
 {
   <div style="border:1px solid red;">

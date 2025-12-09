@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 
 export interface CreateProductCommand {
   name: string
@@ -31,9 +31,12 @@ export interface ListProductCategoryQueryDto {
   styleUrl: './example3.component.scss',
 })
 export class Example3Component implements OnInit {
-  JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiIzIiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3RyaW5nIiwiaXNfYWRtaW4iOiJmYWxzZSIsImlzX21hbmFnZXIiOiJmYWxzZSIsImlzX2VtcGxveWVlIjoidHJ1ZSIsInZlciI6IjAiLCJpYXQiOjE3NjQ2NzcwMTQsImp0aSI6ImRiMmIzOTMxMGE1NzQwY2NhZDA5ZTIxMTBkNWZiY2M4IiwiYXVkIjpbIk1hcmtldC5TcGEiLCJNYXJrZXQuU3BhIl0sIm5iZiI6MTc2NDY3NzAxNCwiZXhwIjoxNzY0Njg3ODE0LCJpc3MiOiJNYXJrZXQuQXBpIn0.S4PNB_RZd7D88hPRI0xAed-fqMPy0GtD5hEQMOcVERs";
+  JWT_TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvbmFtZWlkZW50aWZpZXIiOiI0IiwiaHR0cDovL3NjaGVtYXMueG1sc29hcC5vcmcvd3MvMjAwNS8wNS9pZGVudGl0eS9jbGFpbXMvZW1haWxhZGRyZXNzIjoic3RyaW5nIiwiaXNfYWRtaW4iOiJmYWxzZSIsImlzX21hbmFnZXIiOiJmYWxzZSIsImlzX2VtcGxveWVlIjoidHJ1ZSIsInZlciI6IjAiLCJpYXQiOjE3NjUyNDU5ODAsImp0aSI6IjhjYmExYmMxZThmMDRhNWY4ODBhZDRhMDJkNTU1MjBmIiwiYXVkIjpbIk1hcmtldC5TcGEiLCJNYXJrZXQuU3BhIl0sIm5iZiI6MTc2NTI0NTk4MCwiZXhwIjoxNzY1MjQ2ODgwLCJpc3MiOiJNYXJrZXQuQXBpIn0.PfHpI0yuN4muTIZuKZMxhVos_fY23CzAqg7GeVvjd6Y";
   API_BASE = "https://localhost:7260";
   responseInfo = "...";
+
+  constructor(private cd: ChangeDetectorRef) {
+  }
 
   productCommand: CreateProductCommand = {
     name : "neko ime " + new Date().toLocaleDateString("en-US"),
@@ -41,6 +44,7 @@ export class Example3Component implements OnInit {
     price : 1,
     categoryId : 1
   }
+  public categoryData: ListProductCategoryQueryDto[] = [];
 
   ngOnInit() {
     this.loadCategories();
@@ -58,16 +62,9 @@ export class Example3Component implements OnInit {
         throw new Error("Failed to load categories: " + response.status);
       }
 
-      const data:ListProductCategoryQueryResponse = await response.json();
-      const select: any = document.getElementById("category");
-
-      // API returns { total, items: [ { id, name, isEnabled } ] }
-      (data.items || []).forEach((cat: any) => {
-        const option = document.createElement("option");
-        option.value = cat.id;
-        option.textContent = cat.name;
-        select.appendChild(option);
-      });
+      let data: ListProductCategoryQueryResponse = await response.json();
+      this.categoryData = data.items;
+      this.cd.markForCheck();
     } catch (err: any) {
       document.getElementById("result")!.textContent = err.toString();
       console.error(err);

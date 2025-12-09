@@ -23,7 +23,7 @@ export class Example2ManualChangeDetectionComponent implements OnInit {
 
     this.counter++;
     console.log(`Novi setTimeout za interval = ${this.interval} za counter = ${this.counter}.`)
-    this.cd.markForCheck(); // angular ne prepoznaje izmjene nastale na klasicnim js interavom (setTimeout)
+    //this.cd.markForCheck(); // angular ne prepoznaje izmjene nastale na klasicnim js interavom (setTimeout)
 
     setTimeout(() => this.tick(), this.interval);
   }
