@@ -14,6 +14,7 @@ import {AdminSettingsComponent} from './admin-settings/admin-settings.component'
 import {SharedModule} from '../shared/shared-module';
 import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialog/order-details-dialog.component';
 import { ChangeStatusDialogComponent } from './orders/change-status-dialog/change-status-dialog.component';
+import { ProductCategories2Component } from './catalogs/product-categories-2/product-categories-2.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { ChangeStatusDialogComponent } from './orders/change-status-dialog/chang
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
     ChangeStatusDialogComponent,
+    ProductCategories2Component,
   ],
   imports: [
     AdminRoutingModule,

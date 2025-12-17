@@ -1,0 +1,31 @@
+<p>product-categories-2 works!</p>
+
+<table>
+  <thead>
+      <th>
+          Id
+      </th>
+      <th>
+        Name
+      </th>
+      <th>
+        Is enabled
+      </th>
+    <th>
+      Actions
+    </th>
+  </thead>
+  <tbody>
+    <tr *ngFor="let x of productCategoriesList">
+      <td>{{x.id}}</td>
+      <td>{{x.name}}</td>
+      <td>{{x.isEnabled ? "Da" : "Ne"}}
+        <input type="checkbox" [checked] = "x.isEnabled" (change)="changeStatus(x, $event)">
+      </td>
+      <td>
+        <button (click)="deleteAction(x)">Obriši</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
