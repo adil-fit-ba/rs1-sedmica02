@@ -2,5 +2,5 @@
 
 public sealed class MarketNotFoundException : Exception
 {
-    public MarketNotFoundException(string message) : base(message) { }
+    public MarketNotFoundException(string message, object? id = null) : base(message) { }
 }

@@ -10,6 +10,7 @@ namespace Market.API.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(Policy = "AdminOnly")]
 public class ProductCategoriesController(ISender sender) : ControllerBase
 {
     [HttpPost]
@@ -37,6 +38,7 @@ public class ProductCategoriesController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     public async Task<GetProductCategoryByIdQueryDto> GetById(int id, CancellationToken ct)
     {
         var category = await sender.Send(new GetProductCategoryByIdQuery { Id = id }, ct);

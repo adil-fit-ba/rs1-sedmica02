@@ -1,7 +1,11 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Commands.Delete;
+using Market.Application.Abstractions.Caching;
 
-public class DeleteProductCommandHandler(IAppDbContext context, IAppCurrentUser appCurrentUser)
-      : IRequestHandler<DeleteProductCommand, Unit>
+namespace Market.Application.Modules.Catalog.Products.Commands.Delete;
+
+public class DeleteProductCommandHandler(
+    IAppDbContext context,
+    IAppCurrentUser appCurrentUser,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<DeleteProductCommand, Unit>
 {
     public async Task<Unit> Handle(DeleteProductCommand request, CancellationToken cancellationToken)
     {
@@ -16,6 +20,9 @@ public class DeleteProductCommandHandler(IAppDbContext context, IAppCurrentUser 
 
         context.Products.Remove(product);
         await context.SaveChangesAsync(cancellationToken);
+
+        // Invalidate catalog cache
+        await cacheVersionService.BumpVersionAsync(cancellationToken);
 
         return Unit.Value;
     }

@@ -11,6 +11,7 @@ namespace Market.API.Controllers;
 public class ProductsController(ISender sender) : ControllerBase
 {
     [HttpPost]
+    [Authorize(Policy = "Staff")]
     public async Task<ActionResult<int>> Create(CreateProductCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -19,6 +20,7 @@ public class ProductsController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}")]
+    [Authorize(Policy = "Staff")]
     public async Task Update(int id, UpdateProductCommand command, CancellationToken ct)
     {
         // ID from the route takes precedence
@@ -28,6 +30,7 @@ public class ProductsController(ISender sender) : ControllerBase
     }
 
     [HttpDelete("{id:int}")]
+    [Authorize(Policy = "Staff")]
     public async Task Delete(int id, CancellationToken ct)
     {
         await sender.Send(new DeleteProductCommand { Id = id }, ct);
@@ -35,6 +38,7 @@ public class ProductsController(ISender sender) : ControllerBase
     }
 
     [HttpGet("{id:int}")]
+    [AllowAnonymous]
     public async Task<GetProductByIdQueryDto> GetById(int id, CancellationToken ct)
     {
         var category = await sender.Send(new GetProductByIdQuery { Id = id }, ct);
@@ -42,6 +46,7 @@ public class ProductsController(ISender sender) : ControllerBase
     }
 
     [HttpGet]
+    [AllowAnonymous]
     public async Task<PageResult<ListProductsQueryDto>> List([FromQuery] ListProductsQuery query, CancellationToken ct)
     {
         var result = await sender.Send(query, ct);

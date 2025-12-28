@@ -12,6 +12,7 @@ namespace Market.API.Controllers;
 public class OrdersController(ISender sender) : ControllerBase
 {
     [HttpPost]
+    // Fallback policy already requires authenticated user
     public async Task<ActionResult<int>> Create(CreateOrderCommand command, CancellationToken ct)
     {
         int id = await sender.Send(command, ct);
@@ -34,6 +35,7 @@ public class OrdersController(ISender sender) : ControllerBase
         var dto = await sender.Send(new GetOrderByIdQuery { Id = id }, ct);
         return dto; // if NotFoundException -> 404 via middleware
     }
+
     [HttpGet]
     public async Task<PageResult<ListOrdersQueryDto>> List([FromQuery] ListOrdersQuery query, CancellationToken ct)
     {
@@ -49,6 +51,7 @@ public class OrdersController(ISender sender) : ControllerBase
     }
 
     [HttpPut("{id:int}/change-status")]
+    [Authorize(Policy = "Staff")]
     public async Task ChangeStatus(int id, [FromBody] ChangeOrderStatusCommand command, CancellationToken ct)
     {
         command.Id = id;

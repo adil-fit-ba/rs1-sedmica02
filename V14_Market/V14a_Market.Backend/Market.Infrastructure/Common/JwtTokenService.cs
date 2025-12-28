@@ -1,4 +1,4 @@
-﻿using Market.Application.Abstractions;
+using Market.Application.Abstractions;
 using Market.Shared.Options;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -42,6 +42,18 @@ public sealed class JwtTokenService : IJwtTokenService
             new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString("N")),
             new(JwtRegisteredClaimNames.Aud, _jwt.Audience)
         };
+
+        // Add role claims for RBAC
+        if (user.IsAdmin)
+            claims.Add(new Claim(ClaimTypes.Role, "Admin"));
+        if (user.IsManager)
+            claims.Add(new Claim(ClaimTypes.Role, "Manager"));
+        if (user.IsEmployee)
+            claims.Add(new Claim(ClaimTypes.Role, "Employee"));
+
+        // Fallback role if no flags are set
+        if (!user.IsAdmin && !user.IsManager && !user.IsEmployee)
+            claims.Add(new Claim(ClaimTypes.Role, "Customer"));
 
         // --- Signature ---
         var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwt.Key));

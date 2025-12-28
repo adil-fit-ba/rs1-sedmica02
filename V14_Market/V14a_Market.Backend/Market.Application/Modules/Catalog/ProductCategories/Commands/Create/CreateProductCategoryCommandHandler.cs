@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Create;
+using Market.Application.Abstractions.Caching;
 
-public class CreateProductCategoryCommandHandler(IAppDbContext context)
-    : IRequestHandler<CreateProductCategoryCommand, int>
+namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Create;
+
+public class CreateProductCategoryCommandHandler(
+    IAppDbContext context,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<CreateProductCategoryCommand, int>
 {
     public async Task<int> Handle(CreateProductCategoryCommand request, CancellationToken cancellationToken)
     {
@@ -27,6 +30,9 @@ public class CreateProductCategoryCommandHandler(IAppDbContext context)
 
         context.ProductCategories.Add(category);
         await context.SaveChangesAsync(cancellationToken);
+
+        // Invalidate catalog cache
+        await cacheVersionService.BumpVersionAsync(cancellationToken);
 
         return category.Id;
     }

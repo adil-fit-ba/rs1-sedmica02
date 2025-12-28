@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Commands.Create;
+using Market.Application.Abstractions.Caching;
 
-public class CreateProductCommandHandler(IAppDbContext ctx)
-    : IRequestHandler<CreateProductCommand, int>
+namespace Market.Application.Modules.Catalog.Products.Commands.Create;
+
+public class CreateProductCommandHandler(
+    IAppDbContext ctx,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<CreateProductCommand, int>
 {
     public async Task<int> Handle(CreateProductCommand request, CancellationToken ct)
     {
@@ -25,15 +28,15 @@ public class CreateProductCommandHandler(IAppDbContext ctx)
 
         if (productCategory is null)
         {
-            throw new ValidationException("Invalid CategoryId.");
+            throw new MarketNotFoundException("ProductCategory", request.CategoryId);
         }
 
         if (productCategory.IsEnabled == false)
         {
-            throw new ValidationException($"Category {productCategory.Name} is disabled.");
+            throw new MarketConflictException($"Category {productCategory.Name} is disabled.");
         }
 
-        var category = new ProductEntity
+        var product = new ProductEntity
         {
             Name = request.Name!.Trim(),
             Description = request.Description?.Trim(),
@@ -43,9 +46,12 @@ public class CreateProductCommandHandler(IAppDbContext ctx)
             IsEnabled = true // deault IsEnabled
         };
 
-        ctx.Products.Add(category);
+        ctx.Products.Add(product);
         await ctx.SaveChangesAsync(ct);
 
-        return category.Id;
+        // Invalidate catalog cache
+        await cacheVersionService.BumpVersionAsync(ct);
+
+        return product.Id;
     }
 }

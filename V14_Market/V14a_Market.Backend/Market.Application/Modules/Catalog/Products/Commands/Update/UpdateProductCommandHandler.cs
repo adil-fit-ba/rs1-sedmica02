@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Commands.Update;
+using Market.Application.Abstractions.Caching;
 
-public sealed class UpdateProductCommandHandler(IAppDbContext ctx)
-            : IRequestHandler<UpdateProductCommand, Unit>
+namespace Market.Application.Modules.Catalog.Products.Commands.Update;
+
+public sealed class UpdateProductCommandHandler(
+    IAppDbContext ctx,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<UpdateProductCommand, Unit>
 {
     public async Task<Unit> Handle(UpdateProductCommand request, CancellationToken ct)
     {
@@ -27,12 +30,12 @@ public sealed class UpdateProductCommandHandler(IAppDbContext ctx)
 
         if (productCategory is null)
         {
-            throw new ValidationException("Invalid CategoryId.");
+            throw new MarketNotFoundException("ProductCategory", request.CategoryId);
         }
 
         if (productCategory.IsEnabled == false)
         {
-            throw new ValidationException($"Category {productCategory.Name} is disabled.");
+            throw new MarketConflictException($"Category {productCategory.Name} is disabled.");
         }
 
         entity.Name = request.Name.Trim();
@@ -41,6 +44,9 @@ public sealed class UpdateProductCommandHandler(IAppDbContext ctx)
         entity.CategoryId = request.CategoryId;
 
         await ctx.SaveChangesAsync(ct);
+
+        // Invalidate catalog cache
+        await cacheVersionService.BumpVersionAsync(ct);
 
         return Unit.Value;
     }

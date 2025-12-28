@@ -1,4 +1,4 @@
-﻿using Market.Infrastructure.Common;
+using Market.Infrastructure.Common;
 using Market.Shared.Dtos;
 using Market.Shared.Options;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -65,9 +65,16 @@ public static class DependencyInjection
 
         services.AddAuthorization(o =>
         {
+            // Fallback policy requires authenticated user
             o.FallbackPolicy = new AuthorizationPolicyBuilder()
                 .RequireAuthenticatedUser()
                 .Build();
+
+            // AdminOnly policy
+            o.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+
+            // Staff policy (Admin, Manager, Employee)
+            o.AddPolicy("Staff", policy => policy.RequireRole("Admin", "Manager", "Employee"));
         });
 
         // Swagger with Bearer auth

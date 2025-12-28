@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Enable;
+using Market.Application.Abstractions.Caching;
 
-public sealed class EnableProductCategoryCommandHandler(IAppDbContext ctx)
-    : IRequestHandler<EnableProductCategoryCommand, Unit>
+namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Enable;
+
+public sealed class EnableProductCategoryCommandHandler(
+    IAppDbContext ctx,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<EnableProductCategoryCommand, Unit>
 {
     public async Task<Unit> Handle(EnableProductCategoryCommand request, CancellationToken ct)
     {
@@ -15,6 +18,9 @@ public sealed class EnableProductCategoryCommandHandler(IAppDbContext ctx)
         {
             entity.IsEnabled = true;
             await ctx.SaveChangesAsync(ct);
+
+            // Invalidate catalog cache
+            await cacheVersionService.BumpVersionAsync(ct);
         }
 
         // If already enabled — nothing changes, idempotent

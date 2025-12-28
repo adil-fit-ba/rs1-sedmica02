@@ -1,4 +1,4 @@
-﻿using Market.Application.Modules.Auth.Commands.Login;
+using Market.Application.Modules.Auth.Commands.Login;
 
 public sealed class LoginCommandHandler(
     IAppDbContext ctx,
@@ -34,7 +34,9 @@ public sealed class LoginCommandHandler(
         {
             AccessToken = tokens.AccessToken,
             RefreshToken = tokens.RefreshTokenRaw,
-            ExpiresAtUtc = tokens.RefreshTokenExpiresAtUtc
+            ExpiresAtUtc = tokens.RefreshTokenExpiresAtUtc, // Backward compatibility
+            AccessExpiresAtUtc = tokens.AccessTokenExpiresAtUtc,
+            RefreshExpiresAtUtc = tokens.RefreshTokenExpiresAtUtc
         };
     }
 }

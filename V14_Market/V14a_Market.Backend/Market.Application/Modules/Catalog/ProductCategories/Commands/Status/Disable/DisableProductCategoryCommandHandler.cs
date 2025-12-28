@@ -1,7 +1,10 @@
-﻿namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Disable;
+using Market.Application.Abstractions.Caching;
 
-public sealed class DisableProductCategoryCommandHandler(IAppDbContext ctx)
-    : IRequestHandler<DisableProductCategoryCommand, Unit>
+namespace Market.Application.Modules.Catalog.ProductCategories.Commands.Status.Disable;
+
+public sealed class DisableProductCategoryCommandHandler(
+    IAppDbContext ctx,
+    ICatalogCacheVersionService cacheVersionService) : IRequestHandler<DisableProductCategoryCommand, Unit>
 {
     public async Task<Unit> Handle(DisableProductCategoryCommand request, CancellationToken ct)
     {
@@ -28,6 +31,9 @@ public sealed class DisableProductCategoryCommandHandler(IAppDbContext ctx)
         cat.IsEnabled = false;
 
         await ctx.SaveChangesAsync(ct);
+
+        // Invalidate catalog cache
+        await cacheVersionService.BumpVersionAsync(ct);
 
         // await _bus.PublishAsync(new ProductCategoryDisabledV1IntegrationEvent(cat.Id, ...), ct);
         // await _cache.RemoveAsync(CacheKeys.CategoriesList, ct);
