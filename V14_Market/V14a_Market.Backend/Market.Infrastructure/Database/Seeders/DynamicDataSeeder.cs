@@ -20,8 +20,82 @@ public static class DynamicDataSeeder
 
         await SeedProductCategoriesAsync(context);
         await SeedUsersAsync(context);
+        await PromotionSeederAsync(context);  // ✅ DODANO
         await SeedProductsAsync(context);
         await SeedOrdersAsync(context);
+    }
+
+    public static async Task PromotionSeederAsync(DatabaseContext context)
+    {
+        if (await context.Promotions.AnyAsync())
+        {
+            Console.WriteLine("⏭️  Promotions already exist. Skipping seed.");
+            return;
+        }
+
+        var promotions = new List<PromotionEntity>
+        {
+            new PromotionEntity
+            {
+                Title = "Zimska rasprodaja - Do 50% popusta!",
+                ImageUrl = "https://images.unsplash.com/photo-1491002052546-bf38f186af56?w=800&h=300&fit=crop",
+                TargetUrl = "/products?category=zimska-oprema",
+                SortOrder = 1,
+                IsActive = true,
+                StartsAtUtc = null,
+                EndsAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-30)
+            },
+            new PromotionEntity
+            {
+                Title = "Novi proizvodi - Pogledajte kolekciju",
+                ImageUrl = "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&h=300&fit=crop",
+                TargetUrl = "/products?sort=newest",
+                SortOrder = 2,
+                IsActive = true,
+                StartsAtUtc = null,
+                EndsAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-25)
+            },
+            new PromotionEntity
+            {
+                Title = "Besplatna dostava za narudžbe preko 50 BAM",
+                ImageUrl = "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800&h=300&fit=crop",
+                TargetUrl = null,
+                SortOrder = 3,
+                IsActive = true,
+                StartsAtUtc = null,
+                EndsAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-20)
+            },
+            new PromotionEntity
+            {
+                Title = "Akcija - Brendirana oprema -30%",
+                ImageUrl = "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&h=300&fit=crop",
+                TargetUrl = "/products?brand=premium",
+                SortOrder = 4,
+                IsActive = true,
+                StartsAtUtc = null,
+                EndsAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-15)
+            },
+            new PromotionEntity
+            {
+                Title = "Loyalty program - Sakupljajte bodove",
+                ImageUrl = "https://images.unsplash.com/photo-1556742393-d75f468bfcb0?w=800&h=300&fit=crop",
+                TargetUrl = "/loyalty",
+                SortOrder = 5,
+                IsActive = true,
+                StartsAtUtc = null,
+                EndsAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-10)
+            }
+        };
+
+        context.Promotions.AddRange(promotions);
+        await context.SaveChangesAsync();
+
+        Console.WriteLine($"✅ Dynamic seed: {promotions.Count} promotions added with Unsplash images.");
     }
 
     private static async Task SeedProductCategoriesAsync(DatabaseContext context)

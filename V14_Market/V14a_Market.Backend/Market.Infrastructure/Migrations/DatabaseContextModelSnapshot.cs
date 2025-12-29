@@ -147,62 +147,6 @@ namespace Market.Infrastructure.Migrations
                         .HasDatabaseName("IX_Promotions_IsActive_SortOrder");
 
                     b.ToTable("Promotions", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CreatedAtUtc = new DateTime(2022, 4, 13, 1, 22, 18, 866, DateTimeKind.Local),
-                            ImageUrl = "/images/promotions/winter-sale.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            SortOrder = 1,
-                            TargetUrl = "/products?category=zimska-oprema",
-                            Title = "Zimska rasprodaja - Do 50% popusta!"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CreatedAtUtc = new DateTime(2022, 4, 13, 1, 22, 18, 866, DateTimeKind.Local),
-                            ImageUrl = "/images/promotions/new-arrivals.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            SortOrder = 2,
-                            TargetUrl = "/products?sort=newest",
-                            Title = "Novi proizvodi - Pogledajte kolekciju"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            CreatedAtUtc = new DateTime(2022, 4, 13, 1, 22, 18, 866, DateTimeKind.Local),
-                            ImageUrl = "/images/promotions/free-shipping.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            SortOrder = 3,
-                            Title = "Besplatna dostava za narudžbe preko 50 BAM"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            CreatedAtUtc = new DateTime(2022, 4, 13, 1, 22, 18, 866, DateTimeKind.Local),
-                            ImageUrl = "/images/promotions/brand-sale.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            SortOrder = 4,
-                            TargetUrl = "/products?brand=premium",
-                            Title = "Akcija - Brendirana oprema -30%"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            CreatedAtUtc = new DateTime(2022, 4, 13, 1, 22, 18, 866, DateTimeKind.Local),
-                            ImageUrl = "/images/promotions/loyalty.jpg",
-                            IsActive = true,
-                            IsDeleted = false,
-                            SortOrder = 5,
-                            TargetUrl = "/loyalty",
-                            Title = "Loyalty program - Sakupljajte bodove"
-                        });
                 });
 
             modelBuilder.Entity("Market.Domain.Entities.Catalog.UserProductFavoriteEntity", b =>

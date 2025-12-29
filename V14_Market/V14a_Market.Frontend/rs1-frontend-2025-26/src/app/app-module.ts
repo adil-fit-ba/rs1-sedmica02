@@ -1,4 +1,4 @@
-import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection } from '@angular/core';
+import { NgModule, provideBrowserGlobalErrorListeners, provideZoneChangeDetection, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { provideAnimations} from '@angular/platform-browser/animations';
 import {HttpClient, provideHttpClient, withInterceptors} from '@angular/common/http';
@@ -40,7 +40,8 @@ import {SharedModule} from './modules/shared/shared-module';
         authInterceptor,
         errorLoggingInterceptor
       ])
-    )
+    ),
+    { provide: LOCALE_ID, useValue: 'bs-BA' }
   ],
   exports: [
   ],

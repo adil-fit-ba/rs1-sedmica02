@@ -132,7 +132,7 @@ export interface GetByIdOrderQueryDtoUser {
 export interface GetByIdOrderQueryDtoItemProduct {
   productId: number;
   productName: string | null;
-  productCategoryName: number;
+  productCategoryName: string | null;
 }
 
 /**

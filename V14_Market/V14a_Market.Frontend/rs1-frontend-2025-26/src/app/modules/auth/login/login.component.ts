@@ -1,6 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BaseComponent } from '../../../core/components/base-classes/base-component';
 import { AuthFacadeService } from '../../../core/services/auth/auth-facade.service';
 import { LoginCommand } from '../../../api-services/auth/auth-api.model';
@@ -16,6 +16,7 @@ export class LoginComponent extends BaseComponent {
   private fb = inject(FormBuilder);
   private auth = inject(AuthFacadeService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
   private currentUser = inject(CurrentUserService);
   hidePassword = true;
 
@@ -39,8 +40,13 @@ export class LoginComponent extends BaseComponent {
     this.auth.login(payload).subscribe({
       next: () => {
         this.stopLoading();
-        const target = this.currentUser.getDefaultRoute();
-        this.router.navigate([target]);
+        const returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+        if (returnUrl) {
+          this.router.navigateByUrl(returnUrl);
+        } else {
+          const target = this.currentUser.getDefaultRoute();
+          this.router.navigate([target]);
+        }
       },
       error: (err) => {
         this.stopLoading('Invalid credentials. Please try again.');

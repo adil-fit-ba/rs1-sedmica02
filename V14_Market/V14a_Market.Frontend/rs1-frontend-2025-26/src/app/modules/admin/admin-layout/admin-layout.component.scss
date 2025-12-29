@@ -522,3 +522,50 @@ $sidebar-width: 280px;
     }
   }
 }
+
+// Dark Mode Fix - Target MDC list item text and icons
+@media (prefers-color-scheme: dark) {
+  .sidenav-container .sidenav {
+    mat-nav-list {
+      // Fix for invisible text in dark mode
+      a[mat-list-item] {
+        .mdc-list-item__primary-text {
+          color: #e4e7eb !important;
+        }
+
+        mat-icon[matListItemIcon] {
+          color: #aab3c2 !important;
+        }
+
+        // Active state overrides
+        &.active {
+          .mdc-list-item__primary-text {
+            color: lighten($primary-color, 20%) !important;
+          }
+
+          mat-icon[matListItemIcon] {
+            color: lighten($primary-color, 20%) !important;
+          }
+        }
+
+        // Hover state
+        &:hover:not(.active) {
+          mat-icon[matListItemIcon] {
+            color: lighten($primary-color, 15%) !important;
+          }
+        }
+
+        // Logout item
+        &.logout-item {
+          .mdc-list-item__primary-text {
+            color: lighten($error-color, 10%) !important;
+          }
+
+          mat-icon[matListItemIcon] {
+            color: lighten($error-color, 10%) !important;
+          }
+        }
+      }
+    }
+  }
+}

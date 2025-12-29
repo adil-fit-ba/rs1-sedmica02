@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Market.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class initnovi1 : Migration
+    public partial class init14 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -26,6 +26,28 @@ namespace Market.Infrastructure.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductCategories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Promotions",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Title = table.Column<string>(type: "nvarchar(120)", maxLength: 120, nullable: false),
+                    ImageUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    TargetUrl = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    StartsAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndsAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    SortOrder = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Promotions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -220,6 +242,11 @@ namespace Market.Infrastructure.Migrations
                 column: "CategoryId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Promotions_IsActive_SortOrder",
+                table: "Promotions",
+                columns: new[] { "IsActive", "SortOrder" });
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RefreshTokens_UserId_TokenHash",
                 table: "RefreshTokens",
                 columns: new[] { "UserId", "TokenHash" },
@@ -248,6 +275,9 @@ namespace Market.Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");

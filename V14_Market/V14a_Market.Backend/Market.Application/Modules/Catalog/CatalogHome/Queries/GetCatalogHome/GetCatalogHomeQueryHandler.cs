@@ -1,4 +1,4 @@
-using Market.Application.Abstractions;
+﻿using Market.Application.Abstractions;
 using Market.Application.Abstractions.Caching;
 
 namespace Market.Application.Modules.Catalog.CatalogHome.Queries.GetCatalogHome;
@@ -40,12 +40,14 @@ public sealed class GetCatalogHomeQueryHandler(
                     })
                     .ToListAsync(ct);
 
-                // Newest products (by Id DESC as proxy for "newest")
+                // Newest products (by CreatedAtUtc DESC, then Id DESC)
+                // FIX: Changed from OrderByDescending(p => p.Id) to OrderByDescending(p => p.CreatedAtUtc)
                 var products = await db.Products
                     .AsNoTracking()
                     .Include(p => p.Category)
                     .Where(p => p.IsEnabled && !p.IsDeleted)
-                    .OrderByDescending(p => p.Id)
+                    .OrderByDescending(p => p.CreatedAtUtc)  // ✅ FIXED: Sort by creation date
+                    .ThenByDescending(p => p.Id)              // ✅ ADDED: Tiebreaker for same timestamp
                     .Take(productLimit)
                     .Select(p => new CatalogProductDto
                     {
@@ -61,7 +63,7 @@ public sealed class GetCatalogHomeQueryHandler(
                 // Promotions (active and within date window)
                 var promotions = await db.Promotions
                     .AsNoTracking()
-                    .Where(p => p.IsActive 
+                    .Where(p => p.IsActive
                         && !p.IsDeleted
                         && (p.StartsAtUtc == null || p.StartsAtUtc <= now)
                         && (p.EndsAtUtc == null || p.EndsAtUtc >= now))
