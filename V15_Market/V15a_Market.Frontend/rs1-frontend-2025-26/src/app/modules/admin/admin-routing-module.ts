@@ -7,6 +7,7 @@ import { ProductsAddComponent } from './catalogs/products/products-add/products-
 import { ProductsEditComponent } from './catalogs/products/products-edit/products-edit.component';
 import { ProductCategoriesComponent } from './catalogs/product-categories/product-categories.component';
 import {AdminOrdersComponent} from './orders/admin-orders.component';
+import {OrderEditComponent} from './orders/order-edit/order-edit.component';
 import {AdminSettingsComponent} from './admin-settings/admin-settings.component';
 import {ProductCategories2Component} from './catalogs/product-categories-2/product-categories-2.component';
 import {
@@ -53,11 +54,18 @@ const routes: Routes = [
         path: 'product-categories-2/edit/:abc',
         component: ProductCategoriesEditComponent,
       },
+
+      // ORDERS
       {
         path: 'orders',
         component: AdminOrdersComponent,
       },
+      {
+        path: 'orders/:id/edit',
+        component: OrderEditComponent,
+      },
 
+      // SETTINGS
       {
         path: 'settings',
         component: AdminSettingsComponent,

@@ -173,6 +173,15 @@
             </button>
             <button
               mat-icon-button
+              color="primary"
+              (click)="onEdit(order, $event)"
+              [matTooltip]="'ORDERS.ACTIONS.EDIT' | translate"
+              [disabled]="!canEdit(order)"
+              class="action-btn edit-btn">
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
               color="accent"
               (click)="onChangeStatus(order, $event)"
               [matTooltip]="'ORDERS.ACTIONS.CHANGE_STATUS' | translate"

@@ -78,7 +78,8 @@ export class ProductCategoryUpsertComponent implements OnInit {
 
   private createCategory(): void {
     const command: CreateProductCategoryCommand = {
-      name: this.form.value.name.trim()
+      name: this.form.value.name.trim(),
+      isEnabled: this.form.value.isEnabled
     };
 
     this.api.create(command).subscribe({
@@ -95,7 +96,8 @@ export class ProductCategoryUpsertComponent implements OnInit {
 
   private updateCategory(): void {
     const command: UpdateProductCategoryCommand = {
-      name: this.form.value.name.trim()
+      name: this.form.value.name.trim(),
+      isEnabled: this.form.value.isEnabled
     };
 
     this.api.update(this.data.categoryId!, command).subscribe({

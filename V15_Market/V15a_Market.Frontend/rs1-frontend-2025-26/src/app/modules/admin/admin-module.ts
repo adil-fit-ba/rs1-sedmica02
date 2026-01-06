@@ -10,6 +10,7 @@ import {
   ProductCategoryUpsertComponent
 } from './catalogs/product-categories/product-category-upsert/product-category-upsert.component';
 import {AdminOrdersComponent} from './orders/admin-orders.component';
+import {OrderEditComponent} from './orders/order-edit/order-edit.component';
 import {AdminSettingsComponent} from './admin-settings/admin-settings.component';
 import {SharedModule} from '../shared/shared-module';
 import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialog/order-details-dialog.component';
@@ -28,6 +29,7 @@ import { ProductCategoriesAddComponent } from './catalogs/product-categories-2/p
     ProductCategoriesComponent,
     ProductCategoryUpsertComponent,
     AdminOrdersComponent,
+    OrderEditComponent,
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
     ChangeStatusDialogComponent,

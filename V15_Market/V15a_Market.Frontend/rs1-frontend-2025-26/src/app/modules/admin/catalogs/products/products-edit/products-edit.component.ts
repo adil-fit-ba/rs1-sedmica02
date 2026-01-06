@@ -71,14 +71,9 @@ export class ProductsEditComponent
 
     this.startLoading();
 
-    const command: UpdateProductCommand = {
-      name: this.form.value.name,
-      description: this.form.value.description,
-      price: this.form.value.price,
-      categoryId: this.form.value.categoryId
-    };
+    const payload = this.form.getRawValue();
 
-    this.api.update(this.productId, command).subscribe({
+    this.api.update(this.productId, payload).subscribe({
       next: () => {
         this.stopLoading();
         this.toaster.success('Product updated successfully');

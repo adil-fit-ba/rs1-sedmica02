@@ -1,6 +1,5 @@
 import {Component, inject, OnDestroy, OnInit} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
-import {Router} from '@angular/router';
 import {Subject} from 'rxjs';
 import {debounceTime, distinctUntilChanged, takeUntil} from 'rxjs/operators';
 import {FormControl} from '@angular/forms';
@@ -26,7 +25,6 @@ export class AdminOrdersComponent
   private ordersApi = inject(OrdersApiService);
   private dialog = inject(MatDialog);
   private toaster = inject(ToasterService);
-  private router = inject(Router);
   private destroy$ = new Subject<void>();
 
   // Table columns
@@ -145,22 +143,6 @@ export class AdminOrdersComponent
     });
   }
 
-  onEdit(order: ListOrdersQueryDto, event?: Event): void {
-    // Prevent row click
-    if (event) {
-      event.stopPropagation();
-    }
-
-    // Check if order is Draft
-    if (order.status !== OrderStatusType.Draft) {
-      this.toaster.error('Samo draft narudžbe mogu biti uređene');
-      return;
-    }
-
-    // Navigate to edit page
-    this.router.navigate(['/admin/orders', order.id, 'edit']);
-  }
-
   onChangeStatus(order: ListOrdersQueryDto, event?: Event): void {
     // Prevent row click
     if (event) {
@@ -221,11 +203,6 @@ export class AdminOrdersComponent
     // Can change if not in final state
     return order.status !== OrderStatusType.Completed &&
       order.status !== OrderStatusType.Cancelled;
-  }
-
-  canEdit(order: ListOrdersQueryDto): boolean {
-    // Can edit only Draft orders
-    return order.status === OrderStatusType.Draft;
   }
 
   // === Display Helpers ===
