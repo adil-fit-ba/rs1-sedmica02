@@ -18,6 +18,13 @@
       </mat-error>
       <mat-hint align="end">{{ form.get('name')?.value?.length || 0 }}/100</mat-hint>
     </mat-form-field>
+
+    <!-- Is Enabled Checkbox -->
+    <div class="checkbox-field">
+      <mat-checkbox formControlName="isEnabled" color="primary">
+        {{ 'PRODUCT_CATEGORIES.FORM.IS_ENABLED' | translate }}
+      </mat-checkbox>
+    </div>
   </form>
 
   <!-- Loading State -->

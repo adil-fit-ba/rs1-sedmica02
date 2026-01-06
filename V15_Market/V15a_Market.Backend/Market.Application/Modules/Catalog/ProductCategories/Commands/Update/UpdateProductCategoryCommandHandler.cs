@@ -34,6 +34,7 @@ public sealed class UpdateProductCategoryCommandHandler : IRequestHandler<Update
         }
 
         entity.Name = request.Name.Trim();
+        entity.IsEnabled = request.IsEnabled;
 
         await _ctx.SaveChangesAsync(ct);
 

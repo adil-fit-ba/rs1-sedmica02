@@ -1,4 +1,4 @@
-﻿using Market.Domain.Entities.Sales;
+using Market.Domain.Entities.Sales;
 
 namespace Market.Application.Modules.Sales.Orders.Commands.Update;
 
@@ -49,6 +49,18 @@ public class UpdateOrderCommandHandler(IAppDbContext ctx, IAppCurrentUser curren
 
         ctx.OrderItems.RemoveRange(itemsToDelete);
 
+        #endregion
+
+        #region Check if all items are deleted - auto cancel
+        
+        // Ako nema stavki u request-u, automatski prebaci na Cancelled status
+        if (request.Items == null || request.Items.Count == 0)
+        {
+            order.Status = OrderStatusType.Cancelled;
+            await ctx.SaveChangesAsync(ct);
+            return order.Id;
+        }
+        
         #endregion
 
         #region Load products from database and prepare a map

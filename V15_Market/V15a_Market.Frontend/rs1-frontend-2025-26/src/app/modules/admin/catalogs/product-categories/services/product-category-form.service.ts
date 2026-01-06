@@ -20,9 +20,13 @@ export class ProductCategoryFormService {
         category?.name ?? '',
         [
           Validators.required,
-          Validators.minLength(2),
+          Validators.minLength(3),
           Validators.maxLength(100)
         ]
+      ],
+      isEnabled: [
+        category?.isEnabled ?? true,
+        [Validators.required]
       ]
     });
   }
