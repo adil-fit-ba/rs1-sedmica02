@@ -28,7 +28,7 @@ public class ProductCategoryUnitTests
             .ReturnsAsync(2); // Returns new version number
 
         var handler = new CreateProductCategoryCommandHandler(context, mockCacheVersionService.Object);
-        var command = new CreateProductCategoryCommand { Name = "Test Category" };
+        var command = new CreateProductCategoryCommand { Name = "Test Category", IsEnabled = true };
 
         // Act
         var resultId = await handler.Handle(command, CancellationToken.None);
