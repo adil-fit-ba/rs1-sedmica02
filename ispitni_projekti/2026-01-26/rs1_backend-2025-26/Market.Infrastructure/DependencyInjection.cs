@@ -60,16 +60,16 @@ public static class DependencyInjection
         var redisConnectionString = configuration.GetValue<string>("Redis:ConnectionString");
         if (!string.IsNullOrEmpty(redisConnectionString))
         {
-            // IConnectionMultiplexer for atomic operations
-            services.AddSingleton<IConnectionMultiplexer>(sp =>
-                ConnectionMultiplexer.Connect(redisConnectionString));
+            //// IConnectionMultiplexer for atomic operations
+            //services.AddSingleton<IConnectionMultiplexer>(sp =>
+            //    ConnectionMultiplexer.Connect(redisConnectionString));
 
-            // IDistributedCache for general caching
-            services.AddStackExchangeRedisCache(options =>
-            {
-                options.Configuration = redisConnectionString;
-                options.InstanceName = configuration.GetValue<string>("Redis:InstanceName") ?? "Market:";
-            });
+            //// IDistributedCache for general caching
+            //services.AddStackExchangeRedisCache(options =>
+            //{
+            //    options.Configuration = redisConnectionString;
+            //    options.InstanceName = configuration.GetValue<string>("Redis:InstanceName") ?? "Market:";
+            //});
 
             // Cache services
             services.AddSingleton<ICacheService, CacheService>();
