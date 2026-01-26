@@ -1,8 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Market.Domain.Entities.Catalog;
 using Market.Domain.Entities.Sales;
 using Market.Domain.Entities.Identity;
+using Market.Domain.Entities.Fakture;
 
 namespace Market.Infrastructure.Database.Seeders;
 
@@ -23,6 +24,7 @@ public static class DynamicDataSeeder
         await PromotionSeederAsync(context);  // ✅ DODANO
         await SeedProductsAsync(context);
         await SeedOrdersAsync(context);
+        await SeedFaktureAsync(context);
     }
 
     public static async Task PromotionSeederAsync(DatabaseContext context)
@@ -671,5 +673,55 @@ public static class DynamicDataSeeder
             Order = null!,
             CreatedAtUtc = DateTime.UtcNow
         };
+    }
+
+    /// <summary>
+    /// Kreira demo fakture ako ih još nema u bazi.
+    /// </summary>
+    private static async Task SeedFaktureAsync(DatabaseContext context)
+    {
+        if (await context.Fakture.AnyAsync())
+            return;
+
+        var fakture = new List<FakturaEntity>
+        {
+            new FakturaEntity
+            {
+                BrojRacuna = "FAK-2026-0001",
+                Tip = FakturaTip.Ulazna,
+                Napomena = null,
+                BrojStavki = 6,
+                CreatedAtUtc = new DateTime(2026, 1, 8, 10, 15, 0, DateTimeKind.Utc)
+            },
+            new FakturaEntity
+            {
+                BrojRacuna = "FAK-2026-0002",
+                Tip = FakturaTip.Izlazna,
+                Napomena = null,
+                BrojStavki = 3,
+                CreatedAtUtc = new DateTime(2026, 1, 12, 14, 40, 0, DateTimeKind.Utc)
+            },
+            new FakturaEntity
+            {
+                BrojRacuna = "FAK-2026-0003",
+                Tip = FakturaTip.Izlazna,
+                Napomena = null,
+                BrojStavki = 9,
+                CreatedAtUtc = new DateTime(2026, 1, 18, 9, 5, 0, DateTimeKind.Utc)
+            },
+            new FakturaEntity
+            {
+                BrojRacuna = "FAK-2026-0004",
+                Tip = FakturaTip.Ulazna,
+                Napomena = null,
+                BrojStavki = 2,
+                CreatedAtUtc = new DateTime(2026, 1, 22, 16, 30, 0, DateTimeKind.Utc)
+            }
+        };
+
+        context.Fakture.AddRange(fakture);
+        await context.SaveChangesAsync();
+
+        Console.WriteLine($"✅ Dynamic seed: {fakture.Count} fakture added.");
     }
 }

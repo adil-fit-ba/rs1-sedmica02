@@ -18,6 +18,9 @@ import { ChangeStatusDialogComponent } from './orders/change-status-dialog/chang
 import { ProductCategories2Component } from './catalogs/product-categories-2/product-categories-2.component';
 import { ProductCategoriesEditComponent } from './catalogs/product-categories-2/product-categories-edit/product-categories-edit.component';
 import { ProductCategoriesAddComponent } from './catalogs/product-categories-2/product-categories-add/product-categories-add.component';
+import { DostavljaciComponent } from './catalogs/dostavljaci/dostavljaci.component';
+import { FaktureComponent } from './catalogs/fakture/fakture.component';
+import { FakturaAddComponent } from './catalogs/fakture/faktura-add/faktura-add.component';
 
 
 @NgModule({
@@ -36,6 +39,9 @@ import { ProductCategoriesAddComponent } from './catalogs/product-categories-2/p
     ProductCategories2Component,
     ProductCategoriesEditComponent,
     ProductCategoriesAddComponent,
+    DostavljaciComponent,
+    FaktureComponent,
+    FakturaAddComponent,
   ],
   imports: [
     AdminRoutingModule,

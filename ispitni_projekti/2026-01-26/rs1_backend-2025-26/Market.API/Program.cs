@@ -52,11 +52,11 @@ public partial class Program
             // CORS policy to allow Angular dev server access
             builder.Services.AddCors(options =>
             {
-                options.AddPolicy("AllowAngularDev",
+                options.AddPolicy("AllowAnyOrigin",
                     policy =>
                     {
                         policy
-                            .WithOrigins("http://localhost:4200") // kao string array može i više URL-ova
+                            .SetIsOriginAllowed(_=> true) // allow any origin
                             .AllowAnyHeader()
                             .AllowAnyMethod()
                             .AllowCredentials();
@@ -80,7 +80,7 @@ public partial class Program
 
             app.UseHttpsRedirection();
             // UseCors ide prije UseAuthorization i UseAuthentification
-            app.UseCors("AllowAngularDev");
+            app.UseCors("AllowAnyOrigin");
 
             app.UseAuthentication();
             app.UseAuthorization();

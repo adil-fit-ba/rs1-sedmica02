@@ -69,6 +69,16 @@
         <mat-icon matListItemIcon>inventory_2</mat-icon>
         <span matListItemTitle>{{ 'ADMIN_PANEL.MENU.PRODUCTS' | translate }}</span>
       </a>
+
+      <a mat-list-item routerLink="/admin/dostavljaci" routerLinkActive="active">
+        <mat-icon matListItemIcon>local_shipping</mat-icon>
+        <span matListItemTitle>Dostavljači</span>
+      </a>
+
+      <a mat-list-item routerLink="/admin/fakture" routerLinkActive="active">
+        <mat-icon matListItemIcon>receipt_long</mat-icon>
+        <span matListItemTitle>Fakture</span>
+      </a>
       <mat-divider></mat-divider>
 
       <a mat-list-item routerLink="/admin/product-categories-2" routerLinkActive="active">
