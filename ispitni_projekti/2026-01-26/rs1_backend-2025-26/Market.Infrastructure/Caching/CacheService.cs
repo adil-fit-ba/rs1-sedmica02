@@ -6,14 +6,6 @@ namespace Market.Infrastructure.Caching;
 
 public sealed class CacheService : ICacheService
 {
-    private readonly IDistributedCache _cache;
-    private static readonly JsonSerializerOptions JsonOptions = new(JsonSerializerDefaults.Web);
-
-    public CacheService(IDistributedCache cache)
-    {
-        _cache = cache;
-    }
-
     public async Task<T?> GetOrCreateAsync<T>(
         string key,
         Func<CancellationToken, Task<T>> factory,

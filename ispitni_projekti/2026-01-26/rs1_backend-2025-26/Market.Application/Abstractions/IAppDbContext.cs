@@ -1,4 +1,5 @@
 using Market.Domain.Entities.Sales;
+using Market.Domain.Entities.Fakture;
 
 namespace Market.Application.Abstractions;
 
@@ -13,6 +14,8 @@ public interface IAppDbContext
 
     DbSet<OrderEntity> Orders{ get; }
     DbSet<OrderItemEntity> OrderItems { get; }
+
+    DbSet<FakturaEntity> Fakture { get; }
 
     Task<int> SaveChangesAsync(CancellationToken ct);
 }
