@@ -16,6 +16,9 @@ import {
 import {
   ProductCategoriesAddComponent
 } from './catalogs/product-categories-2/product-categories-add/product-categories-add.component';
+import { DostavljaciComponent } from './catalogs/dostavljaci/dostavljaci.component';
+import { FaktureComponent } from './catalogs/fakture/fakture.component';
+import { FakturaAddComponent } from './catalogs/fakture/faktura-add/faktura-add.component';
 
 const routes: Routes = [
   {
@@ -69,6 +72,22 @@ const routes: Routes = [
       {
         path: 'settings',
         component: AdminSettingsComponent,
+      },
+
+      // DOSTAVLJACI
+      {
+        path: 'dostavljaci',
+        component: DostavljaciComponent,
+      },
+
+      // FAKTURE
+      {
+        path: 'fakture',
+        component: FaktureComponent,
+      },
+      {
+        path: 'fakture/add',
+        component: FakturaAddComponent,
       },
 
 
