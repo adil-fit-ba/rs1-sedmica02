@@ -68,11 +68,6 @@ export class FakturaAddComponent {
     this.items.removeAt(index);
   }
 
-  getOrderTotal(): number {
-    // Fake izračun za demo
-    return 1250.00;
-  }
-
   onCancel(): void {
     this.router.navigate(['/admin/fakture']);
   }
