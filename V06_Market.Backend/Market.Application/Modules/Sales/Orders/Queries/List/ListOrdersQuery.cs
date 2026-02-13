@@ -1,4 +1,4 @@
-﻿namespace Market.Application.Modules.Catalog.Products.Queries.List;
+﻿namespace Market.Application.Modules.Sales.Orders.Queries.List;
 
 public sealed class ListOrdersQuery : BasePagedQuery<ListOrdersQueryDto>
 {
