@@ -24,7 +24,9 @@ public static class DynamicDataSeeder
         await PromotionSeederAsync(context);  // ✅ DODANO
         await SeedProductsAsync(context);
         await SeedOrdersAsync(context);
+        await SeedOrderShipmentsAsync(context);
         await SeedFaktureAsync(context);
+        await SeedUplateAsync(context);
     }
 
     public static async Task PromotionSeederAsync(DatabaseContext context)
@@ -676,6 +678,151 @@ public static class DynamicDataSeeder
     }
 
     /// <summary>
+    /// Kreira demo pošiljke (shipments) ako ih još nema u bazi.
+    /// </summary>
+    private static async Task SeedOrderShipmentsAsync(DatabaseContext context)
+    {
+        if (await context.OrderShipments.AnyAsync())
+            return;
+
+        var orders = await context.Orders.ToListAsync();
+        if (!orders.Any())
+        {
+            Console.WriteLine("⚠️  No orders found. Skipping shipments seed.");
+            return;
+        }
+
+        var shipments = new List<OrderShipmentEntity>
+        {
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00001",
+                Status = OrderShipmentStatusType.Dostavljena,
+                ShippingCost = 12.50m,
+                OrderId = orders[0].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-14),
+                DeliveredAtUtc = DateTime.UtcNow.AddDays(-12),
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-14)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00002",
+                Status = OrderShipmentStatusType.UDostavi,
+                ShippingCost = 8.00m,
+                OrderId = orders[1].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-9),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-9)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00003",
+                Status = OrderShipmentStatusType.Kreirana,
+                ShippingCost = 15.00m,
+                OrderId = orders[2].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-4),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-4)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00004",
+                Status = OrderShipmentStatusType.USkladistu,
+                ShippingCost = 10.00m,
+                OrderId = orders[3].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-1),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-1)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00005",
+                Status = OrderShipmentStatusType.Otkazana,
+                ShippingCost = 9.50m,
+                OrderId = orders[4].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-6),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-6)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00006",
+                Status = OrderShipmentStatusType.Dostavljena,
+                ShippingCost = 20.00m,
+                OrderId = orders[0].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-13),
+                DeliveredAtUtc = DateTime.UtcNow.AddDays(-11),
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-13)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00007",
+                Status = OrderShipmentStatusType.UDostavi,
+                ShippingCost = 7.50m,
+                OrderId = orders[5].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-1),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-1)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00008",
+                Status = OrderShipmentStatusType.Kreirana,
+                ShippingCost = 11.00m,
+                OrderId = orders[2].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-3),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-3)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00009",
+                Status = OrderShipmentStatusType.Dostavljena,
+                ShippingCost = 14.00m,
+                OrderId = orders[1].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-8),
+                DeliveredAtUtc = DateTime.UtcNow.AddDays(-6),
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-8)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00010",
+                Status = OrderShipmentStatusType.USkladistu,
+                ShippingCost = 6.00m,
+                OrderId = orders[3].Id,
+                ShippedAtUtc = DateTime.UtcNow,
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00011",
+                Status = OrderShipmentStatusType.Dostavljena,
+                ShippingCost = 18.50m,
+                OrderId = orders[5].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-2),
+                DeliveredAtUtc = DateTime.UtcNow.AddDays(-1),
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-2)
+            },
+            new OrderShipmentEntity
+            {
+                ShipmentNumber = "SHP-00012",
+                Status = OrderShipmentStatusType.UDostavi,
+                ShippingCost = 9.00m,
+                OrderId = orders[4].Id,
+                ShippedAtUtc = DateTime.UtcNow.AddDays(-5),
+                DeliveredAtUtc = null,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-5)
+            }
+        };
+
+        context.OrderShipments.AddRange(shipments);
+        await context.SaveChangesAsync();
+
+        Console.WriteLine($"✅ Dynamic seed: {shipments.Count} order shipments added.");
+    }
+
+    /// <summary>
     /// Kreira demo fakture ako ih još nema u bazi.
     /// </summary>
     private static async Task SeedFaktureAsync(DatabaseContext context)
@@ -723,5 +870,54 @@ public static class DynamicDataSeeder
         await context.SaveChangesAsync();
 
         Console.WriteLine($"✅ Dynamic seed: {fakture.Count} fakture added.");
+    }
+
+    /// <summary>
+    /// Kreira demo uplate ako ih još nema u bazi.
+    /// </summary>
+    private static async Task SeedUplateAsync(DatabaseContext context)
+    {
+        if (await context.Uplate.AnyAsync())
+            return;
+
+        var orders = await context.Orders.ToListAsync();
+        if (!orders.Any())
+        {
+            Console.WriteLine("⚠️  No orders found. Skipping uplate seed.");
+            return;
+        }
+
+        var uplate = new List<UplataEntity>
+        {
+            new UplataEntity
+            {
+                BrojUplate = "UPL-0001",
+                OrderId = orders[0].Id,
+                Napomena = "Prva uplata za narudžbu.",
+                UkupanIznos = 500.00m,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-12)
+            },
+            new UplataEntity
+            {
+                BrojUplate = "UPL-0002",
+                OrderId = orders[1].Id,
+                Napomena = null,
+                UkupanIznos = 1200.00m,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-8)
+            },
+            new UplataEntity
+            {
+                BrojUplate = "UPL-0003",
+                OrderId = orders[0].Id,
+                Napomena = "Druga rata.",
+                UkupanIznos = 750.00m,
+                CreatedAtUtc = DateTime.UtcNow.AddDays(-3)
+            }
+        };
+
+        context.Uplate.AddRange(uplate);
+        await context.SaveChangesAsync();
+
+        Console.WriteLine($"✅ Dynamic seed: {uplate.Count} uplate added.");
     }
 }

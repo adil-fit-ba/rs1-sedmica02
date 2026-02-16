@@ -9,16 +9,13 @@ import { ProductCategoriesComponent } from './catalogs/product-categories/produc
 import {AdminOrdersComponent} from './orders/admin-orders.component';
 import {OrderEditComponent} from './orders/order-edit/order-edit.component';
 import {AdminSettingsComponent} from './admin-settings/admin-settings.component';
-import {ProductCategories2Component} from './catalogs/product-categories-2/product-categories-2.component';
-import {
-  ProductCategoriesEditComponent
-} from './catalogs/product-categories-2/product-categories-edit/product-categories-edit.component';
-import {
-  ProductCategoriesAddComponent
-} from './catalogs/product-categories-2/product-categories-add/product-categories-add.component';
-import { DostavljaciComponent } from './catalogs/dostavljaci/dostavljaci.component';
+import { PosiljkeComponent } from './posiljke/posiljke.component';
+import { PosiljkaAddComponent } from './posiljke/posiljka-add/posiljka-add.component';
+import { PosiljkaEditComponent } from './posiljke/posiljka-edit/posiljka-edit.component';
 import { FaktureComponent } from './catalogs/fakture/fakture.component';
 import { FakturaAddComponent } from './catalogs/fakture/faktura-add/faktura-add.component';
+import { UplateComponent } from './uplate/uplate.component';
+import { UplataAddComponent } from './uplate/uplata-add/uplata-add.component';
 
 const routes: Routes = [
   {
@@ -45,19 +42,6 @@ const routes: Routes = [
         component: ProductCategoriesComponent,
       },
 
-      {
-        path: 'product-categories-2',
-        component: ProductCategories2Component,
-      },
-      {
-        path: 'product-categories-2/add',
-        component: ProductCategoriesAddComponent,
-      },
-      {
-        path: 'product-categories-2/edit/:abc',
-        component: ProductCategoriesEditComponent,
-      },
-
       // ORDERS
       {
         path: 'orders',
@@ -74,10 +58,18 @@ const routes: Routes = [
         component: AdminSettingsComponent,
       },
 
-      // DOSTAVLJACI
+      // POŠILJKE
       {
-        path: 'dostavljaci',
-        component: DostavljaciComponent,
+        path: 'posiljke',
+        component: PosiljkeComponent,
+      },
+      {
+        path: 'posiljke/add',
+        component: PosiljkaAddComponent,
+      },
+      {
+        path: 'posiljke/:id/edit',
+        component: PosiljkaEditComponent,
       },
 
       // FAKTURE
@@ -90,6 +82,15 @@ const routes: Routes = [
         component: FakturaAddComponent,
       },
 
+      // UPLATE
+      {
+        path: 'uplate',
+        component: UplateComponent,
+      },
+      {
+        path: 'uplate/add',
+        component: UplataAddComponent,
+      },
 
       // default admin route → /admin/products
       {

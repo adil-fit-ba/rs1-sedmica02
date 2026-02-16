@@ -15,12 +15,14 @@ import {AdminSettingsComponent} from './admin-settings/admin-settings.component'
 import {SharedModule} from '../shared/shared-module';
 import { OrderDetailsDialogComponent } from './orders/admin-orders-details-dialog/order-details-dialog.component';
 import { ChangeStatusDialogComponent } from './orders/change-status-dialog/change-status-dialog.component';
-import { ProductCategories2Component } from './catalogs/product-categories-2/product-categories-2.component';
-import { ProductCategoriesEditComponent } from './catalogs/product-categories-2/product-categories-edit/product-categories-edit.component';
-import { ProductCategoriesAddComponent } from './catalogs/product-categories-2/product-categories-add/product-categories-add.component';
-import { DostavljaciComponent } from './catalogs/dostavljaci/dostavljaci.component';
+import { PosiljkeComponent } from './posiljke/posiljke.component';
+import { PosiljkaAddComponent } from './posiljke/posiljka-add/posiljka-add.component';
+import { PosiljkaEditComponent } from './posiljke/posiljka-edit/posiljka-edit.component';
 import { FaktureComponent } from './catalogs/fakture/fakture.component';
 import { FakturaAddComponent } from './catalogs/fakture/faktura-add/faktura-add.component';
+import { DostavljaciComponent } from './catalogs/dostavljaci/dostavljaci.component';
+import { UplateComponent } from './uplate/uplate.component';
+import { UplataAddComponent } from './uplate/uplata-add/uplata-add.component';
 
 
 @NgModule({
@@ -36,12 +38,14 @@ import { FakturaAddComponent } from './catalogs/fakture/faktura-add/faktura-add.
     AdminSettingsComponent,
     OrderDetailsDialogComponent,
     ChangeStatusDialogComponent,
-    ProductCategories2Component,
-    ProductCategoriesEditComponent,
-    ProductCategoriesAddComponent,
     DostavljaciComponent,
+    PosiljkeComponent,
+    PosiljkaAddComponent,
+    PosiljkaEditComponent,
     FaktureComponent,
     FakturaAddComponent,
+    UplateComponent,
+    UplataAddComponent,
   ],
   imports: [
     AdminRoutingModule,

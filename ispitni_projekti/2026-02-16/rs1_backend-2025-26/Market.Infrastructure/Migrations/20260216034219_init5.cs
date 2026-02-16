@@ -6,11 +6,30 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Market.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class init14 : Migration
+    public partial class init5 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "Fakture",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrojRacuna = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Tip = table.Column<int>(type: "int", nullable: false),
+                    Napomena = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    BrojStavki = table.Column<int>(type: "int", nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Fakture", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "ProductCategories",
                 columns: table => new
@@ -114,6 +133,8 @@ namespace Market.Infrastructure.Migrations
                     Status = table.Column<int>(type: "int", nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     Note = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TotalAmountPaid = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    BalanceDue = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
@@ -221,6 +242,58 @@ namespace Market.Infrastructure.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "OrderShipments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ShipmentNumber = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Status = table.Column<int>(type: "int", nullable: false),
+                    ShippingCost = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    ShippedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DeliveredAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_OrderShipments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_OrderShipments_Oders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Oders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Uplate",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    BrojUplate = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    OrderId = table.Column<int>(type: "int", nullable: false),
+                    Napomena = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    UkupanIznos = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ModifiedAtUtc = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Uplate", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Uplate_Oders_OrderId",
+                        column: x => x.OrderId,
+                        principalTable: "Oders",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_Oders_MarketUserId",
                 table: "Oders",
@@ -237,6 +310,11 @@ namespace Market.Infrastructure.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_OrderShipments_OrderId",
+                table: "OrderShipments",
+                column: "OrderId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
                 table: "Products",
                 column: "CategoryId");
@@ -251,6 +329,11 @@ namespace Market.Infrastructure.Migrations
                 table: "RefreshTokens",
                 columns: new[] { "UserId", "TokenHash" },
                 unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Uplate_OrderId",
+                table: "Uplate",
+                column: "OrderId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserProductFavorites_ProductId",
@@ -274,13 +357,22 @@ namespace Market.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Fakture");
+
+            migrationBuilder.DropTable(
                 name: "OrderItems");
+
+            migrationBuilder.DropTable(
+                name: "OrderShipments");
 
             migrationBuilder.DropTable(
                 name: "Promotions");
 
             migrationBuilder.DropTable(
                 name: "RefreshTokens");
+
+            migrationBuilder.DropTable(
+                name: "Uplate");
 
             migrationBuilder.DropTable(
                 name: "UserProductFavorites");

@@ -48,6 +48,16 @@ public class OrderEntity : BaseEntity
     /// </summary>
     public string? Note { get; set; }
 
+    /// <summary>
+    /// Total amount paid so far (suma svih uplata).
+    /// </summary>
+    public decimal TotalAmountPaid { get; set; }
+
+    /// <summary>
+    /// Remaining balance due (TotalAmount - TotalAmountPaid).
+    /// </summary>
+    public decimal BalanceDue { get; set; }
+
     ///// <summary>
     ///// Collection of order items.
     /////

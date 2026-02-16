@@ -17,7 +17,9 @@ export enum OrderStatusType {
   /** Order has been shipped or delivered */
   Completed = 4,
   /** Order has been cancelled */
-  Cancelled = 5
+  Cancelled = 5,
+  /** Order is partially paid */
+  PartiallyPaid = 6
 }
 
 // === QUERIES (READ) ===

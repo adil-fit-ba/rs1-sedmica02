@@ -28,5 +28,10 @@ public enum OrderStatusType
     /// <summary>
     /// Order has been cancelled.
     /// </summary>
-    Cancelled = 5
+    Cancelled = 5,
+
+    /// <summary>
+    /// Order has been partially paid.
+    /// </summary>
+    PartiallyPaid = 6
 }
