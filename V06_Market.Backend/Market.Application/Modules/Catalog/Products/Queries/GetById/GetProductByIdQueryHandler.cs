@@ -1,6 +1,7 @@
 ﻿namespace Market.Application.Modules.Catalog.Products.Queries.GetById;
 
-public class GetProductByIdQueryHandler(IAppDbContext context) : IRequestHandler<GetProductByIdQuery, GetProductByIdQueryDto>
+public class GetProductByIdQueryHandler(IAppDbContext context) 
+    : IRequestHandler<GetProductByIdQuery, GetProductByIdQueryDto>
 {
     public async Task<GetProductByIdQueryDto> Handle(GetProductByIdQuery request, CancellationToken cancellationToken)
     {
